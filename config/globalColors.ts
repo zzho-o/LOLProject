@@ -2,7 +2,7 @@ export const colors = {
   WHITE: '#ffffff',
   LB_RED: '#ff2e00',
   LB_E2FF00: '#e2ff00',
-  LB_BLACK: '#000000',
+  BLACK: '#000000',
   LB_4333FF: '#4333ff',
   LB_E4E7FF: '#e4e7ff',
   LB_4333FF_DEEM10: '#3c2ee6',
