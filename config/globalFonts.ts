@@ -14,9 +14,7 @@ const BasicNotoSans = styled.span(({ color = colors.BLACK, underline = 'false', 
   textAlign,
   whiteSpace: 'pre-wrap',
   cursor: 'inherit',
-  flexDirection: 'row',
   display: 'flex',
-  lineBreak: 'anywhere',
   ...style,
 }));
 const BasicRoboto = styled.span(({ color = colors.BLACK, underline = 'false', textAlign = 'left', style }: ITypo) => ({
@@ -26,9 +24,7 @@ const BasicRoboto = styled.span(({ color = colors.BLACK, underline = 'false', te
   textAlign,
   whiteSpace: 'pre-wrap',
   cursor: 'inherit',
-  flexDirection: 'row',
   display: 'flex',
-  lineBreak: 'anywhere',
   ...style,
 }));
 export const WEIGHT = {
