@@ -1,9 +1,10 @@
-import { RecoilRoot } from 'recoil';
+import { RecoilRoot, useRecoilState, useSetRecoilState } from 'recoil';
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, useEffect } from 'react';
 import Layout from 'layout';
 import { NextPage } from 'next';
+import { atomResolution, atomWindow} from '@/utils/recoil/atoms';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -13,11 +14,47 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-function MyApp({ Component, pageProps }: AppPropsWithLayout) {
-  const getLayout = Component.getLayout || ((page: ReactNode) => <Layout>{page}</Layout>);
-  //getLayout으로 레이아웃을 직접 렌더링하지 않으면 기본 레이아웃으로 렌더링
+const App = ({ children }: { children: ReactNode }) => {
+  const [resolution, setResolution] = useRecoilState(atomResolution);
+  const setWindow = useSetRecoilState(atomWindow);
 
-  return <RecoilRoot>{getLayout(<Component {...pageProps} />)}</RecoilRoot>
-}
+  useEffect(() => {
+    const handleWindowResize = () => {
+      const width = window.innerWidth;
+      if (width > 990) {
+        // setResolution('PC');
+      } else if (width > 768) {
+        // setResolution('TABLET');
+      } else {
+        // setResolution('MOBILE');
+      }
+      setWindow({
+        innerWidth: window.innerWidth,
+        innerHeight: window.innerHeight,
+      });
+    };
+    handleWindowResize();
+    window.addEventListener('resize', handleWindowResize);
+    return () => window.removeEventListener('resize', handleWindowResize);
+  }, []);
+
+
+  return <>{children}</>;
+};
+
+const AppWrapper = ({ children }: { children: ReactNode }) => {
+  return (
+    <RecoilRoot>
+      <App>{children}</App>
+    </RecoilRoot>
+  );
+};
+
+const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
+  const getLayout = Component.getLayout || ((page: ReactNode) => <Layout>{page}</Layout>);
+
+  return <AppWrapper>{getLayout(<Component {...pageProps} />)}</AppWrapper>;
+};
+
 
 export default MyApp

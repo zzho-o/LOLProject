@@ -3,8 +3,11 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import * as S from './styles'
+import { atomResolution } from '@/utils/recoil/atoms'
+import { useRecoilState } from 'recoil'
 
 const Home: NextPage = () => {
+  // const [resolution, setResolution] = useRecoilState(atomResolution);
   return (
       <S.MainContainer>
         <Head>
