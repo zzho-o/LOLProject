@@ -68,7 +68,18 @@ const Header = () => {
     }
   };
 
-  return <S.MainContainer isMobile={resolution === "MOBILE"}></S.MainContainer>;
+  return (
+    <S.MainContainer isMobile={resolution === "MOBILE"}>
+      <S.RowBox style={{ flex: 1, marginLeft: 30, fontSize: 30 }}>
+        {userInfo ? "Login" : "Logout"}
+      </S.RowBox>
+      <S.RowBox
+        style={{ flex: 1, flexDirection: "row-reverse", marginRight: 30 }}
+      >
+        로그인버튼 구현
+      </S.RowBox>
+    </S.MainContainer>
+  );
 };
 
 export default Header;

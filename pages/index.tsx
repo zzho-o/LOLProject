@@ -1,28 +1,54 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import * as S from './styles'
-import { atomResolution } from '@/utils/recoil/atoms'
-import { useRecoilState } from 'recoil'
+import { useState } from "react";
+import { useRouter } from "next/router";
+import * as S from "./styles";
+import SearchButton from "@/components/common/SearchButton";
+import SearchInput from "@/components/common/SearchInput";
+import { getIronSession } from "iron-session";
+import { fetchSummonerByRiotId } from "@/utils/api/api";
 
-const Home: NextPage = () => {
-  // const [resolution, setResolution] = useRecoilState(atomResolution);
+export const getServerSideProps = async (context: any) => {
+  const { name } = context.query;
+
+  if (!name) {
+    return { props: { summonerInfo: null } };
+  }
+
+  try {
+    const summonerInfo = await fetchSummonerByRiotId(name);
+    console.log(summonerInfo);
+    return {
+      props: { summonerInfo },
+    };
+  } catch (error) {
+    console.error("Error fetching summoner:", error);
+    return {
+      props: { summonerInfo: null },
+    };
+  }
+};
+
+const Home = () => {
+  const [summonerName, setSummonerName] = useState("");
+  const router = useRouter();
+
+  const handleSearch = () => {
+    if (summonerName.trim()) {
+      router.push(`/?name=${summonerName}`);
+    }
+  };
+
   return (
-      <S.MainContainer>
-        <Head>
-          <title>my own space</title>
-        </Head>
-        <S.BodyContainer>
-          <S.ContentsLeftContainer>
-            메인컨텐츠
-          </S.ContentsLeftContainer>
-          <S.ContentsRightContainer>
-            사이드컨텐츠
-          </S.ContentsRightContainer>
-        </S.BodyContainer>
-      </S.MainContainer>
-  )
-}
+    <S.MainContainer>
+      <S.BodyContainer>
+        <SearchInput
+          summonerName={summonerName}
+          setSummonerName={setSummonerName}
+          handleSearch={handleSearch}
+        />
+        <SearchButton title="검색" handleSearch={handleSearch} />
+      </S.BodyContainer>
+    </S.MainContainer>
+  );
+};
 
-export default Home
+export default Home;
