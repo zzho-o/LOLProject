@@ -6,6 +6,11 @@ export const atomResolution = atom<TResolution>({
   default: "PC",
 });
 
+export const atomNoMatchedNickName = atom<boolean>({
+  key: "atomNoMatchedNickName",
+  default: false,
+});
+
 export const atomScrollY = atom<number>({
   key: "atomScrollY",
   default: 0,

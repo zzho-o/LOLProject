@@ -5,9 +5,12 @@ import SearchButton from "@/components/common/SearchButton";
 import SearchInput from "@/components/common/SearchInput";
 import { getIronSession } from "iron-session";
 import { fetchSummonerByRiotId } from "@/utils/api/api";
+import { atomNoMatchedNickName } from "@/utils/recoil/atoms";
+import { useRecoilState } from "recoil";
 
 export const getServerSideProps = async (context: any) => {
   const { name } = context.query;
+  // const [error, setError] = useRecoilState(atomNoMatchedNickName);
 
   if (!name) {
     return { props: { summonerInfo: null } };
@@ -20,6 +23,7 @@ export const getServerSideProps = async (context: any) => {
       props: { summonerInfo },
     };
   } catch (error) {
+    // setError(true);
     console.error("Error fetching summoner:", error);
     return {
       props: { summonerInfo: null },
@@ -30,6 +34,7 @@ export const getServerSideProps = async (context: any) => {
 const Home = () => {
   const [summonerName, setSummonerName] = useState("");
   const router = useRouter();
+  const [error, setError] = useRecoilState(atomNoMatchedNickName);
 
   const handleSearch = () => {
     if (summonerName.trim()) {
@@ -44,8 +49,9 @@ const Home = () => {
           summonerName={summonerName}
           setSummonerName={setSummonerName}
           handleSearch={handleSearch}
+          error={error}
         />
-        <SearchButton title="검색" handleSearch={handleSearch} />
+        <SearchButton title="적용" handleSearch={handleSearch} />
       </S.BodyContainer>
     </S.MainContainer>
   );
