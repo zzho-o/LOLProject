@@ -1,16 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import * as S from "./styles";
 import SearchButton from "@/components/common/SearchButton";
 import SearchInput from "@/components/common/SearchInput";
-import { getIronSession } from "iron-session";
 import { fetchSummonerByRiotId } from "@/utils/api/api";
-import { atomNoMatchedNickName } from "@/utils/recoil/atoms";
 import { useRecoilState } from "recoil";
+import { atomUserDetailInfo } from "@/utils/recoil/atoms";
+export type getNameTag = {
+  puuid: string;
+  gameName: string;
+  tagLine: string;
+};
 
 export const getServerSideProps = async (context: any) => {
   const { name } = context.query;
-  // const [error, setError] = useRecoilState(atomNoMatchedNickName);
 
   if (!name) {
     return { props: { summonerInfo: null } };
@@ -20,39 +23,47 @@ export const getServerSideProps = async (context: any) => {
     const summonerInfo = await fetchSummonerByRiotId(name);
     console.log(summonerInfo);
     return {
-      props: { summonerInfo },
+      props: { summonerInfo, error: false },
     };
   } catch (error) {
-    // setError(true);
     console.error("Error fetching summoner:", error);
     return {
-      props: { summonerInfo: null },
+      props: { summonerInfo: null, error: true },
     };
   }
 };
 
-const Home = () => {
+const Home = ({ summonerInfo, error }: any) => {
   const [summonerName, setSummonerName] = useState("");
   const router = useRouter();
-  const [error, setError] = useRecoilState(atomNoMatchedNickName);
+  const [userInfo, setUserInfo] = useRecoilState(atomUserDetailInfo);
 
   const handleSearch = () => {
     if (summonerName.trim()) {
       router.push(`/?name=${summonerName}`);
     }
   };
-
+  useEffect(() => {
+    setUserInfo(summonerInfo);
+  }, [summonerInfo]);
   return (
     <S.MainContainer>
       <S.BodyContainer>
-        <SearchInput
-          summonerName={summonerName}
-          setSummonerName={setSummonerName}
-          handleSearch={handleSearch}
-          error={error}
-        />
-        <SearchButton title="적용" handleSearch={handleSearch} />
+        {userInfo ? (
+          <></>
+        ) : (
+          <>
+            <SearchInput
+              summonerName={summonerName}
+              setSummonerName={setSummonerName}
+              handleSearch={handleSearch}
+              error={error}
+            />
+            <SearchButton title="적용" handleSearch={handleSearch} />
+          </>
+        )}
       </S.BodyContainer>
+      {error ? <text>일치하는 닉네임이 없습니다.</text> : <></>}
     </S.MainContainer>
   );
 };

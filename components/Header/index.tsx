@@ -1,8 +1,4 @@
-import {
-  atomIsLoggedIn,
-  atomResolution,
-  atomScrollY,
-} from "@/utils/recoil/atoms";
+import { atomResolution, atomUserDetailInfo } from "@/utils/recoil/atoms";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import {
@@ -12,60 +8,15 @@ import {
   useRecoilValueLoadable,
 } from "recoil";
 import * as S from "./styles";
+import SearchButton from "../common/SearchButton";
 
 const Header = () => {
   const resolution = useRecoilValue(atomResolution);
-  const [menuOpened, setMenuOpened] = useState(false);
-  const [userInfo, setUserInfo] = useRecoilState(atomIsLoggedIn);
+  const [userInfo, setUserInfo] = useRecoilState(atomUserDetailInfo);
   const router = useRouter();
 
-  // useEffect(() => {
-  //   getCookie('token')
-  //     .then((res:any) => {
-  //       const decodedUserInfo: TCookieUser = jwt_decode(res?.access_token);
-  //       const curTime = new Date();
-  //       const token = new Date(decodedUserInfo?.exp * 1000);
-
-  //       if (token.getTime() > curTime.getTime()) {
-  //         setUserInfo(true);
-  //       } else {
-  //         setUserInfo(false);
-  //       }
-  //       userProfileRefresher();
-  //     })
-  //     .catch(e => {
-  //       setUserInfo(false);
-  //     });
-  // }, [router.pathname]);
-
-  // useEffect(() => {
-  //   try {
-  //     getCookie('token').then(res => {
-  //       if (res !== undefined) {
-  //         apiNotification
-  //           .getNotification(1, 1)
-  //           .then(res => (res.count === 0 || res.notifications[0].check ? setHasNewNoti(false) : setHasNewNoti(true)))
-  //           .catch(e => {});
-  //       }
-  //     });
-  //   } catch (e) {}
-  // }, []);
-
-  // useEffect(() => {
-  //   if (userProfileLoadable.state === 'hasValue') {
-  //     setUserData(userProfileLoadable?.contents);
-  //   }
-  // }, [userProfileLoadable]);
-
-  // const onClickTopHeader = () => {
-  //   if (window && ad?.url) {
-  //     window.open(ad?.url);
-  //   }
-  // };
-  const onClickLogo = () => {
-    if (router.asPath === "/") {
-      router.reload();
-    }
+  const onClickLogout = () => {
+    setUserInfo(null);
   };
 
   return (
@@ -76,7 +27,9 @@ const Header = () => {
       <S.RowBox
         style={{ flex: 1, flexDirection: "row-reverse", marginRight: 30 }}
       >
-        로그인버튼 구현
+        {userInfo ? (
+          <SearchButton title={"로그아웃"} handleSearch={onClickLogout} />
+        ) : null}
       </S.RowBox>
     </S.MainContainer>
   );

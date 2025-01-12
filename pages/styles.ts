@@ -4,7 +4,9 @@ export const MainContainer = styled.div({
   display: "flex",
   flex: 1,
   backgroundColor: "#FFFFFF",
-  justifyContent: "center",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "flex-start",
   width: "100%",
 });
 
