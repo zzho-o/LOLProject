@@ -50,7 +50,7 @@ const Home = ({ summonerInfo, error }: any) => {
     <S.MainContainer>
       <S.BodyContainer>
         {userInfo ? (
-          <></>
+          // <LOLcard
         ) : (
           <>
             <SearchInput
