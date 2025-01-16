@@ -16,16 +16,6 @@ export const atomWindow = atom<{ innerWidth: number; innerHeight: number }>({
   default: { innerWidth: 0, innerHeight: 0 },
 });
 
-export const atomIsLoggedIn = atom<boolean>({
-  key: "atomIsLoggedIn",
-  default: false,
-});
-
-export const atomSummonerPuuid = atom<string>({
-  key: "atomSummonerPuuid",
-  default: "",
-});
-
 export const atomUserDetailInfo = atom<TUserDetailInfo | null>({
   key: "atomUserDetailInfo",
   default: null,

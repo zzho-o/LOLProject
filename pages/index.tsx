@@ -6,6 +6,7 @@ import SearchInput from "@/components/common/SearchInput";
 import { fetchSummonerByRiotId } from "@/utils/api/api";
 import { useRecoilState } from "recoil";
 import { atomUserDetailInfo } from "@/utils/recoil/atoms";
+import ProfileCard from "@/components/ProfileCard";
 export type getNameTag = {
   puuid: string;
   gameName: string;
@@ -21,7 +22,7 @@ export const getServerSideProps = async (context: any) => {
 
   try {
     const summonerInfo = await fetchSummonerByRiotId(name);
-    console.log(summonerInfo);
+    // console.log("이미지", summonerInfo);
     return {
       props: { summonerInfo, error: false },
     };
@@ -50,7 +51,7 @@ const Home = ({ summonerInfo, error }: any) => {
     <S.MainContainer>
       <S.BodyContainer>
         {userInfo ? (
-          // <LOLcard
+          <ProfileCard />
         ) : (
           <>
             <SearchInput
