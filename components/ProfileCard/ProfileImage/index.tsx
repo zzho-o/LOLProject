@@ -15,7 +15,6 @@ const ProfileImage = ({ summonerInfo, error }: any) => {
     const fetchImage = async () => {
       try {
         const imageurl = await fetchSummonerImage(userInfo.profileIconId);
-        console.log(String(imageurl));
         setProfileImgUrl(imageurl);
       } catch (err) {
         console.error("Error fetching summoner image:", err);

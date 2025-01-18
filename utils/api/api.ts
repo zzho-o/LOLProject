@@ -68,18 +68,17 @@ export const fetchSummonerByRiotId = async (gameName: string) => {
 /**
  * GAME_IMAGE
  */
-
 export const fetchSummonerImage = async (profileIconId: number) => {
   try {
     const version = await getLatestVersion();
     const response = await RIOT_IMAGE_API.get(
-      `/cdn/${version}/img/profileicon/${profileIconId}.png`
+      `/cdn/${version}/img/profileicon/${profileIconId}.png`,
+      { responseType: "blob" }
     );
-    return response.data;
+    return URL.createObjectURL(response.data);
   } catch (error) {
     console.error("Error fetching summoner image:", error);
     throw error;
   }
 };
-
 export const fetchSummonerByPuuid = {};

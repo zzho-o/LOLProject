@@ -22,7 +22,6 @@ export const getServerSideProps = async (context: any) => {
 
   try {
     const summonerInfo = await fetchSummonerByRiotId(name);
-    // console.log("이미지", summonerInfo);
     return {
       props: { summonerInfo, error: false },
     };
