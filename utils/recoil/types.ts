@@ -7,4 +7,6 @@ export type TUserDetailInfo = {
   profileIconId: number;
   revisionDate: number;
   summonerLevel: number;
+  gameName: string;
+  tagLine: string;
 };

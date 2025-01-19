@@ -49,9 +49,7 @@ const Home = ({ summonerInfo, error }: any) => {
   return (
     <S.MainContainer>
       <S.BodyContainer>
-        {userInfo ? (
-          <ProfileCard />
-        ) : (
+        {userInfo ? null : (
           <>
             <SearchInput
               summonerName={summonerName}

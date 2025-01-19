@@ -9,6 +9,8 @@ import {
 } from "recoil";
 import * as S from "./styles";
 import SearchButton from "../common/SearchButton";
+import ProfileCard from "./ProfileCard";
+import Margin from "../common/Margin";
 
 const Header = () => {
   const resolution = useRecoilValue(atomResolution);
@@ -18,11 +20,20 @@ const Header = () => {
   const onClickLogout = () => {
     setUserInfo(null);
   };
+  console.log(userInfo);
 
   return (
     <S.MainContainer isMobile={resolution === "MOBILE"}>
       <S.RowBox style={{ flex: 1, marginLeft: 30, fontSize: 30 }}>
-        {userInfo ? "Login" : "Logout"}
+        {userInfo ? (
+          <S.RowBox>
+            <ProfileCard />
+            <Margin W={20} />
+            {`${userInfo.gameName}#${userInfo.tagLine}`}
+          </S.RowBox>
+        ) : (
+          "Logout"
+        )}
       </S.RowBox>
       <S.RowBox
         style={{ flex: 1, flexDirection: "row-reverse", marginRight: 30 }}

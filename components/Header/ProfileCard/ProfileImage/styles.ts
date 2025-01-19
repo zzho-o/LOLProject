@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 
 export const profileImageStyle = styled.img({
-  width: 100,
-  height: 100,
+  width: 50,
+  height: 50,
   borderRadius: 50,
   border: "2px solid #000",
 });

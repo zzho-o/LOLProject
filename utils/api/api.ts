@@ -58,7 +58,8 @@ export const fetchSummonerByRiotId = async (gameName: string) => {
     const response = await RIOT_SUMMONER_API.get(
       `https://KR.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid.data.puuid}`
     );
-    return response.data;
+    console.log(puuid);
+    return { ...puuid.data, ...response.data };
   } catch (error: any) {
     console.error("Error fetching summoner by Riot ID:", error.response?.data);
     throw error;
