@@ -26,7 +26,7 @@ const ProfileImage = ({ summonerInfo, error }: any) => {
 
   return (
     <S.MainContainer>
-      <S.profileImageStyle src={profileImgUrl} alt="Summoner Profile Icon" />
+      <S.profileImageStyle src={profileImgUrl} alt="profile" />
     </S.MainContainer>
   );
 };
