@@ -11,11 +11,6 @@ export const atomScrollY = atom<number>({
   default: 0,
 });
 
-export const atomWindow = atom<{ innerWidth: number; innerHeight: number }>({
-  key: "atomWindow",
-  default: { innerWidth: 0, innerHeight: 0 },
-});
-
 export const atomUserDetailInfo = atom<TUserDetailInfo | null>({
   key: "atomUserDetailInfo",
   default: null,
