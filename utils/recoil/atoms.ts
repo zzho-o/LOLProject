@@ -6,11 +6,6 @@ export const atomResolution = atom<TResolution>({
   default: "PC",
 });
 
-export const atomScrollY = atom<number>({
-  key: "atomScrollY",
-  default: 0,
-});
-
 export const atomUserDetailInfo = atom<TUserDetailInfo | null>({
   key: "atomUserDetailInfo",
   default: null,
