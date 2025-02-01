@@ -34,4 +34,5 @@ export const InputContainer = styled.div({
   display: "flex",
   flexDirection: "column",
   width: "100%",
+  height: "auto",
 });
