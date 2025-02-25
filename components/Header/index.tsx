@@ -1,49 +1,56 @@
-import { atomResolution, atomUserDetailInfo } from "@/utils/recoil/atoms";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import {
-  useRecoilRefresher_UNSTABLE,
-  useRecoilState,
-  useRecoilValue,
-  useRecoilValueLoadable,
-} from "recoil";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import * as S from "./styles";
-import SearchButton from "../common/SearchButton";
-import ProfileCard from "./ProfileCard";
-import Margin from "../common/Margin";
+import { colors } from "@/config/globalColors";
 
 const Header = () => {
-  const resolution = useRecoilValue(atomResolution);
-  const [userInfo, setUserInfo] = useRecoilState(atomUserDetailInfo);
-  const router = useRouter();
+  const [activeTab, setActiveTab] = useState("home");
 
-  const onClickLogout = () => {
-    setUserInfo(null);
+  const tabs = [
+    { id: "home", label: "홈" },
+    { id: "record", label: "전적" },
+    { id: "ranking", label: "랭킹" },
+  ];
+
+  const tabContent = {
+    home: <HomeContent />,
+    record: <RecordContent />,
+    ranking: <RankingContent />,
   };
-  console.log(userInfo);
 
   return (
-    <S.MainContainer isMobile={resolution === "MOBILE"}>
-      <S.RowBox style={{ flex: 1, marginLeft: 30, fontSize: 30 }}>
-        {userInfo ? (
-          <S.RowBox>
-            <ProfileCard />
-            <Margin W={20} />
-            {`${userInfo.gameName}#${userInfo.tagLine}`}
-          </S.RowBox>
-        ) : (
-          "Logout"
-        )}
-      </S.RowBox>
-      <S.RowBox
-        style={{ flex: 1, flexDirection: "row-reverse", marginRight: 30 }}
-      >
-        {userInfo ? (
-          <SearchButton title={"로그아웃"} handleSearch={onClickLogout} />
-        ) : null}
-      </S.RowBox>
-    </S.MainContainer>
+    <S.HeaderContainer>
+      <S.NavContainer>
+        {tabs.map((tab) => (
+          <S.TabButton
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            isActive={activeTab === tab.id}
+          >
+            {tab.label}
+            {activeTab === tab.id && (
+              <motion.div
+                layoutId="underline"
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  height: 2,
+                  backgroundColor: colors.PRIMARY,
+                }}
+                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+              />
+            )}
+          </S.TabButton>
+        ))}
+      </S.NavContainer>
+    </S.HeaderContainer>
   );
 };
+
+const HomeContent = () => <div>홈 컨텐츠</div>;
+const RecordContent = () => <div>전적 컨텐츠</div>;
+const RankingContent = () => <div>랭킹 컨텐츠</div>;
 
 export default Header;

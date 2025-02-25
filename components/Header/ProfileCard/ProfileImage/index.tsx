@@ -1,15 +1,18 @@
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import * as S from "./styles";
 import { atomUserDetailInfo } from "@/utils/recoil/atoms";
 import { fetchSummonerImage } from "@/utils/api/api";
-import { useEffect, useState } from "react";
+import * as S from "./styles";
 
-const ProfileImage = ({ summonerInfo, error }: any) => {
+const ProfileImage = () => {
   const userInfo = useRecoilValue(atomUserDetailInfo);
   const [profileImgUrl, setProfileImgUrl] = useState(null);
+
   useEffect(() => {
     if (!userInfo?.profileIconId) {
       setProfileImgUrl(null);
+      return;
     }
 
     const fetchImage = async () => {
@@ -25,9 +28,13 @@ const ProfileImage = ({ summonerInfo, error }: any) => {
   }, [userInfo]);
 
   return (
-    <S.MainContainer>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <S.profileImageStyle src={profileImgUrl} alt="Summoner Profile Icon" />
-    </S.MainContainer>
+    </motion.div>
   );
 };
 

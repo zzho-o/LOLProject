@@ -10,3 +10,8 @@ export const atomUserDetailInfo = atom<TUserDetailInfo | null>({
   key: "atomUserDetailInfo",
   default: null,
 });
+
+export const atomWindow = atom<{ innerWidth: number; innerHeight: number }>({
+  key: "atom_window",
+  default: { innerWidth: 0, innerHeight: 0 },
+});

@@ -1,3 +1,4 @@
+import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import * as S from "./styles";
@@ -7,6 +8,8 @@ import { fetchSummonerByRiotId } from "@/utils/api/api";
 import { useRecoilState } from "recoil";
 import { atomUserDetailInfo } from "@/utils/recoil/atoms";
 import ProfileCard from "@/components/ProfileCard";
+import LayoutBodyOnly from "@/layout/LayoutBodyOnly";
+
 export type getNameTag = {
   puuid: string;
   gameName: string;
@@ -43,26 +46,54 @@ const Home = ({ summonerInfo, error }: any) => {
       router.push(`/?name=${summonerName}`);
     }
   };
+
   useEffect(() => {
     setUserInfo(summonerInfo);
   }, [summonerInfo]);
+
   return (
-    <S.MainContainer>
-      <S.BodyContainer>
-        {userInfo ? null : (
-          <>
+    <>
+      {!userInfo ? (
+        <LayoutBodyOnly>
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+          >
             <SearchInput
               summonerName={summonerName}
               setSummonerName={setSummonerName}
               handleSearch={handleSearch}
               error={error}
             />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.5 }}
+          >
             <SearchButton title="적용" handleSearch={handleSearch} />
-          </>
-        )}
-      </S.BodyContainer>
-      {error ? <text>일치하는 닉네임이 없습니다.</text> : <></>}
-    </S.MainContainer>
+          </motion.div>
+        </LayoutBodyOnly>
+      ) : (
+        <S.MainContainer>
+          <S.BodyContainer>
+            <AnimatePresence>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <ProfileCard />
+              </motion.div>
+            </AnimatePresence>
+          </S.BodyContainer>
+          {error && <text>일치하는 닉네임이 없습니다.</text>}
+        </S.MainContainer>
+      )}
+    </>
   );
 };
 
