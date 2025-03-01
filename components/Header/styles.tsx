@@ -5,21 +5,24 @@ export const HeaderContainer = styled.div({
   width: "100%",
   backgroundColor: colors.GRAY_900,
   boxShadow: `0 4px 6px ${colors.BLACK}`,
-  padding: 10, // 숫자 값 유지
-  // borderBottom 제거 (파란 줄 제거)
+  padding: 10,
 });
 
 export const NavContainer = styled.div({
   display: "flex",
-  gap: 0, // 탭 사이의 간격 제거 (숫자 값)
+  gap: 0,
   alignItems: "center",
+});
+
+export const BeforeSearchContainer = styled.div({
+  color: colors.GRAY_400,
 });
 
 export const TabButton = styled.button<{ isActive: boolean }>(
   ({ isActive }) => ({
     position: "relative",
-    padding: "8px 16px", // rem 대신 px로 변경 (0.5rem = 8px, 1rem = 16px)
-    fontSize: "16px", // rem 대신 px로 변경 (1rem = 16px)
+    padding: "8px 16px",
+    fontSize: "16px",
     fontWeight: isActive ? "bold" : "normal",
     color: isActive ? colors.WHITE : colors.GRAY_400,
     background: "none",
@@ -27,7 +30,7 @@ export const TabButton = styled.button<{ isActive: boolean }>(
     cursor: "pointer",
     transition: "all 0.3s ease",
     textTransform: "uppercase",
-    letterSpacing: "1px", // 숫자 값 유지
+    letterSpacing: "1px",
     overflow: "hidden",
     "&::before": {
       content: '""',
@@ -35,7 +38,7 @@ export const TabButton = styled.button<{ isActive: boolean }>(
       bottom: 0,
       left: 0,
       width: "100%",
-      height: "2px", // 숫자 값 유지
+      height: "2px",
       backgroundColor: isActive ? colors.PRIMARY : "transparent",
       transition: "background-color 0.3s ease",
     },
@@ -57,3 +60,10 @@ export const TabButton = styled.button<{ isActive: boolean }>(
     },
   })
 );
+
+export const TitleContainer = styled.div({
+  display: "flex",
+  flex: 1,
+  flexDirection: "row",
+  justifyContent: "space-between",
+});

@@ -2,9 +2,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import * as S from "./styles";
 import { colors } from "@/config/globalColors";
+import { atomUserDetailInfo } from "@/utils/recoil/atoms";
+import { useRecoilState } from "recoil";
+import Margin from "../common/Margin";
+import { strings } from "@/utils/I18n";
+import Image from "next/image";
 
 const Header = () => {
   const [activeTab, setActiveTab] = useState("home");
+  const [userInfo, setUserInfo] = useRecoilState(atomUserDetailInfo);
 
   const tabs = [
     { id: "home", label: "홈" },
@@ -12,45 +18,41 @@ const Header = () => {
     { id: "ranking", label: "랭킹" },
   ];
 
-  const tabContent = {
-    home: <HomeContent />,
-    record: <RecordContent />,
-    ranking: <RankingContent />,
-  };
-
   return (
     <S.HeaderContainer>
-      <S.NavContainer>
-        {tabs.map((tab) => (
-          <S.TabButton
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            isActive={activeTab === tab.id}
-          >
-            {tab.label}
-            {activeTab === tab.id && (
-              <motion.div
-                layoutId="underline"
-                style={{
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  height: 2,
-                  backgroundColor: colors.PRIMARY,
-                }}
-                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-              />
-            )}
-          </S.TabButton>
-        ))}
-      </S.NavContainer>
+      {userInfo ? (
+        <S.NavContainer>
+          {tabs.map((tab) => (
+            <S.TabButton
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              isActive={activeTab === tab.id}
+            >
+              {tab.label}
+              {activeTab === tab.id && (
+                <motion.div
+                  layoutId="underline"
+                  style={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: 2,
+                    backgroundColor: colors.PRIMARY,
+                  }}
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
+            </S.TabButton>
+          ))}
+        </S.NavContainer>
+      ) : (
+        <S.TitleContainer>
+          <S.TabButton isActive={false}>{strings.title}</S.TabButton>{" "}
+        </S.TitleContainer>
+      )}
     </S.HeaderContainer>
   );
 };
-
-const HomeContent = () => <div>홈 컨텐츠</div>;
-const RecordContent = () => <div>전적 컨텐츠</div>;
-const RankingContent = () => <div>랭킹 컨텐츠</div>;
 
 export default Header;

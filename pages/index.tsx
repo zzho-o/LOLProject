@@ -68,14 +68,6 @@ const Home = ({ summonerInfo, error }: any) => {
               error={error}
             />
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.5 }}
-          >
-            <SearchButton title="적용" handleSearch={handleSearch} />
-          </motion.div>
         </LayoutBodyOnly>
       ) : (
         <S.MainContainer>
@@ -90,7 +82,6 @@ const Home = ({ summonerInfo, error }: any) => {
               </motion.div>
             </AnimatePresence>
           </S.BodyContainer>
-          {error && <text>일치하는 닉네임이 없습니다.</text>}
         </S.MainContainer>
       )}
     </>
