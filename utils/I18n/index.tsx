@@ -7,7 +7,7 @@ export let strings = new LocalizedStrings({
     No_matching_nickname_found: "No matching nickname found.",
     start: "start !!",
   },
-  it: {
+  kor: {
     title: "LoL & TFT 넥서스",
     No_matching_nickname_found: "beta버전이므로 KR태그만 지원합니다.",
     start: "시작 !!",

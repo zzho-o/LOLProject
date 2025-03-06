@@ -6,6 +6,9 @@ export const HeaderContainer = styled.div({
   backgroundColor: colors.GRAY_900,
   boxShadow: `0 4px 6px ${colors.BLACK}`,
   padding: 10,
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
 });
 
 export const NavContainer = styled.div({

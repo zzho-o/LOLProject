@@ -5,6 +5,7 @@ import { ReactElement, ReactNode, useEffect, createContext } from "react";
 import Layout from "layout";
 import { NextPage } from "next";
 import { atomResolution, atomWindow } from "@/utils/recoil/atoms";
+import { Provider } from "@/components/ui/provider";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -44,7 +45,9 @@ const App = ({ children }: { children: ReactNode }) => {
 const AppWrapper = ({ children }: { children: ReactNode }) => {
   return (
     <RecoilRoot>
-      <App>{children}</App>
+      <Provider>
+        <App>{children}</App>
+      </Provider>
     </RecoilRoot>
   );
 };
