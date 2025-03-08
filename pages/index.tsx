@@ -16,22 +16,39 @@ export type getNameTag = {
   tagLine: string;
 };
 
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
+
 export const getServerSideProps = async (context: any) => {
-  const { name } = context.query;
+  const { locale, query } = context;
+  const { name } = query;
 
   if (!name) {
-    return { props: { summonerInfo: null } };
+    return {
+      props: {
+        summonerInfo: null,
+        ...(await serverSideTranslations(locale, ["common"])),
+      },
+    };
   }
 
   try {
     const summonerInfo = await fetchSummonerByRiotId(name);
     return {
-      props: { summonerInfo, error: false },
+      props: {
+        summonerInfo,
+        error: false,
+        ...(await serverSideTranslations(locale, ["common"])),
+      },
     };
   } catch (error) {
     console.error("Error fetching summoner:", error);
     return {
-      props: { summonerInfo: null, error: true },
+      props: {
+        summonerInfo: null,
+        error: true,
+        ...(await serverSideTranslations(locale, ["common"])),
+      },
     };
   }
 };
@@ -40,6 +57,7 @@ const Home = ({ summonerInfo, error }: any) => {
   const [summonerName, setSummonerName] = useState("");
   const router = useRouter();
   const [userInfo, setUserInfo] = useRecoilState(atomUserDetailInfo);
+  const { t, i18n } = useTranslation("common");
 
   const handleSearch = () => {
     if (summonerName.trim()) {

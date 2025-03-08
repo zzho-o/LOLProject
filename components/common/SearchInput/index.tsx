@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import * as S from "./styles";
 import { colors } from "@/config/globalColors";
-import { strings } from "@/utils/I18n";
 import SearchButton from "../SearchButton";
 import { motion } from "framer-motion";
 import Margin from "../Margin";
+import { useTranslation } from "next-i18next";
 interface SearchButtonProps {
   summonerName: string;
   setSummonerName?: (val) => void;
@@ -19,6 +19,7 @@ const SearchInput = ({
   handleSearch = () => {},
   error,
 }: SearchButtonProps) => {
+  const { t, i18n } = useTranslation("common");
   const handleEnterKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleSearch();
@@ -32,7 +33,7 @@ const SearchInput = ({
         <S.BodyContainer>
           <S.StyledInput
             type="text"
-            placeholder={strings.beta_notice}
+            // placeholder={strings.beta_notice}
             value={summonerName}
             onChange={(e) => setSummonerName(e.target.value)}
             onKeyDown={handleEnterKeyDown}
@@ -59,7 +60,8 @@ const SearchInput = ({
             >
               <SearchButton
                 searchButton
-                title={strings.start}
+                title={t("start")}
+                // title
                 handleSearch={handleSearch}
               />
             </motion.div>
@@ -67,7 +69,7 @@ const SearchInput = ({
         </S.BodyContainer>
       </S.MainContainer>
       <Margin H={30} />
-      {error && <text>{strings.No_matching_nickname_found}</text>}
+      {error && <text>{t("nomatchingnicknamefound")}</text>}
     </S.AlertContainer>
   );
 };

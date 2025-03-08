@@ -6,6 +6,7 @@ import Layout from "layout";
 import { NextPage } from "next";
 import { atomResolution, atomWindow } from "@/utils/recoil/atoms";
 import { Provider } from "@/components/ui/provider";
+import { appWithTranslation } from "next-i18next";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -55,9 +56,8 @@ const AppWrapper = ({ children }: { children: ReactNode }) => {
 const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
   const getLayout =
     Component.getLayout || ((page: ReactNode) => <Layout>{page}</Layout>);
-  // 레이아웃이 없다면 헤더와 푸터를 가진 레이아웃 렌더링
 
   return <AppWrapper>{getLayout(<Component {...pageProps} />)}</AppWrapper>;
 };
 
-export default MyApp;
+export default appWithTranslation(MyApp);

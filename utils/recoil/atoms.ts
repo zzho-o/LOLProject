@@ -15,8 +15,3 @@ export const atomWindow = atom<{ innerWidth: number; innerHeight: number }>({
   key: "atom_window",
   default: { innerWidth: 0, innerHeight: 0 },
 });
-
-export const atomLanguage = atom<string>({
-  key: "atom_language",
-  default: "kor",
-});

@@ -2,10 +2,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import * as S from "./styles";
 import { colors } from "@/config/globalColors";
-import { atomLanguage, atomUserDetailInfo } from "@/utils/recoil/atoms";
+import { atomUserDetailInfo } from "@/utils/recoil/atoms";
 import { useRecoilState } from "recoil";
 import Margin from "../common/Margin";
-import { strings } from "@/utils/I18n";
 import Image from "next/image";
 import {
   SelectContent,
@@ -16,23 +15,14 @@ import {
   SelectValueText,
   createListCollection,
 } from "@chakra-ui/react";
+import { useTranslation } from "next-i18next";
 
 const Header = () => {
   const [activeTab, setActiveTab] = useState("home");
   const [userInfo, setUserInfo] = useRecoilState(atomUserDetailInfo);
-  const [language, setLanguage] = useRecoilState(atomLanguage);
   const [labelLanguage, setLabelLanguage] = useState("한국어");
-
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-    strings.setLanguage("kor");
-  }, []);
-  useEffect(() => {
-    strings.setLanguage(language);
-    console.log(123, strings);
-  }, [labelLanguage]);
+  const [lang, setLang] = useState("ko");
+  const { t, i18n } = useTranslation("common");
 
   const tabs = [
     { id: "home", label: "홈" },
@@ -42,11 +32,18 @@ const Header = () => {
 
   const frameworks = createListCollection({
     items: [
-      { label: "한국어", value: "Kor" },
+      { label: "한국어", value: "ko" },
       { label: "English", value: "en" },
     ],
   });
-
+  useEffect(() => {
+    console.log("Current Language:", i18n.language);
+  }, [i18n.language]);
+  useEffect(() => {
+    if (i18n.language !== lang) {
+      i18n.changeLanguage(lang);
+    }
+  }, [lang, i18n.language]);
   return (
     <S.HeaderContainer>
       {userInfo ? (
@@ -77,10 +74,20 @@ const Header = () => {
         </S.NavContainer>
       ) : (
         <S.TitleContainer>
-          <S.TabButton isActive={false}>{strings.title}</S.TabButton>{" "}
+          <S.TabButton isActive={false}>{t("title")}</S.TabButton>
         </S.TitleContainer>
       )}
-      {isClient && (
+      <div style={{ display: "flex", alignItems: "center" }}>
+        {userInfo && (
+          <S.TabButton
+            isActive={true}
+            onClick={() => {
+              setUserInfo(null);
+            }}
+          >
+            {"logout"}
+          </S.TabButton>
+        )}
         <SelectRoot collection={frameworks} size="sm" width="320px">
           <SelectTrigger>
             <div style={{ color: colors.WHITE }}>{labelLanguage}</div>
@@ -93,8 +100,8 @@ const Header = () => {
                 item={lang}
                 key={lang.value}
                 onClick={() => {
-                  setLanguage(lang.value);
                   setLabelLanguage(lang.label);
+                  setLang(lang.value); // `lang.value`로 i18n 언어 설정
                 }}
               >
                 {lang.label}
@@ -102,7 +109,7 @@ const Header = () => {
             ))}
           </SelectContent>
         </SelectRoot>
-      )}
+      </div>
     </S.HeaderContainer>
   );
 };
