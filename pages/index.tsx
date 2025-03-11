@@ -6,7 +6,7 @@ import SearchButton from "@/components/common/SearchButton";
 import SearchInput from "@/components/common/SearchInput";
 import { fetchSummonerByRiotId } from "@/utils/api/api";
 import { useRecoilState } from "recoil";
-import { atomUserDetailInfo } from "@/utils/recoil/atoms";
+import { atomLanguage, atomUserDetailInfo } from "@/utils/recoil/atoms";
 import ProfileCard from "@/components/ProfileCard";
 import LayoutBodyOnly from "@/layout/LayoutBodyOnly";
 
@@ -57,14 +57,12 @@ const Home = ({ summonerInfo, error }: any) => {
   const [summonerName, setSummonerName] = useState("");
   const router = useRouter();
   const [userInfo, setUserInfo] = useRecoilState(atomUserDetailInfo);
-  const { t, i18n } = useTranslation("common");
 
   const handleSearch = () => {
     if (summonerName.trim()) {
       router.push(`/?name=${summonerName}`);
     }
   };
-
   useEffect(() => {
     setUserInfo(summonerInfo);
   }, [summonerInfo]);

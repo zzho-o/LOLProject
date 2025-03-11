@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import * as S from "./styles";
 import { colors } from "@/config/globalColors";
-import { atomUserDetailInfo } from "@/utils/recoil/atoms";
+import { atomLanguage, atomUserDetailInfo } from "@/utils/recoil/atoms";
 import { useRecoilState } from "recoil";
 import Margin from "../common/Margin";
 import Image from "next/image";
@@ -16,13 +16,24 @@ import {
   createListCollection,
 } from "@chakra-ui/react";
 import { useTranslation } from "next-i18next";
+import koData from "@/public/locales/ko/common.json";
+import enData from "@/public/locales/en/common.json";
 
 const Header = () => {
   const [activeTab, setActiveTab] = useState("home");
   const [userInfo, setUserInfo] = useRecoilState(atomUserDetailInfo);
   const [labelLanguage, setLabelLanguage] = useState("한국어");
   const [lang, setLang] = useState("ko");
+  const [language, setLanguage] = useRecoilState(atomLanguage);
   const { t, i18n } = useTranslation("common");
+
+  const languageData = {
+    ko: koData,
+    en: enData,
+  };
+  useEffect(() => {
+    setLanguage(languageData[i18n.language] || {});
+  }, [i18n.language]);
 
   const tabs = [
     { id: "home", label: "홈" },
@@ -40,10 +51,11 @@ const Header = () => {
     console.log("Current Language:", i18n.language);
   }, [i18n.language]);
   useEffect(() => {
-    if (i18n.language !== lang) {
+    if (lang !== i18n.language) {
       i18n.changeLanguage(lang);
     }
-  }, [lang, i18n.language]);
+  }, [lang]);
+
   return (
     <S.HeaderContainer>
       {userInfo ? (
@@ -74,7 +86,7 @@ const Header = () => {
         </S.NavContainer>
       ) : (
         <S.TitleContainer>
-          <S.TabButton isActive={false}>{t("title")}</S.TabButton>
+          <S.TabButton isActive={false}>{language.title}</S.TabButton>
         </S.TitleContainer>
       )}
       <div style={{ display: "flex", alignItems: "center" }}>

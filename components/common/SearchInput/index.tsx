@@ -5,6 +5,8 @@ import SearchButton from "../SearchButton";
 import { motion } from "framer-motion";
 import Margin from "../Margin";
 import { useTranslation } from "next-i18next";
+import { useRecoilState } from "recoil";
+import { atomLanguage } from "@/utils/recoil/atoms";
 interface SearchButtonProps {
   summonerName: string;
   setSummonerName?: (val) => void;
@@ -20,6 +22,7 @@ const SearchInput = ({
   error,
 }: SearchButtonProps) => {
   const { t, i18n } = useTranslation("common");
+  const [language, setLanguage] = useRecoilState(atomLanguage);
   const handleEnterKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleSearch();
@@ -33,7 +36,7 @@ const SearchInput = ({
         <S.BodyContainer>
           <S.StyledInput
             type="text"
-            // placeholder={strings.beta_notice}
+            placeholder={language.betanotice}
             value={summonerName}
             onChange={(e) => setSummonerName(e.target.value)}
             onKeyDown={handleEnterKeyDown}
@@ -60,7 +63,7 @@ const SearchInput = ({
             >
               <SearchButton
                 searchButton
-                title={t("start")}
+                title={language.start}
                 // title
                 handleSearch={handleSearch}
               />
@@ -69,7 +72,7 @@ const SearchInput = ({
         </S.BodyContainer>
       </S.MainContainer>
       <Margin H={30} />
-      {error && <text>{t("nomatchingnicknamefound")}</text>}
+      {error && <text>{language.nomatchingnicknamefound}</text>}
     </S.AlertContainer>
   );
 };
