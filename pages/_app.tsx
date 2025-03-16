@@ -38,7 +38,7 @@ const App = ({ children }: { children: ReactNode }) => {
     handleWindowResize();
     window.addEventListener("resize", handleWindowResize);
     return () => window.removeEventListener("resize", handleWindowResize);
-  }, []);
+  }, [resolution]);
 
   return <>{children}</>;
 };

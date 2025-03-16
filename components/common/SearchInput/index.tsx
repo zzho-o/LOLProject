@@ -7,6 +7,8 @@ import Margin from "../Margin";
 import { useTranslation } from "next-i18next";
 import { useRecoilState } from "recoil";
 import { atomLanguage } from "@/utils/recoil/atoms";
+import { Button } from "@chakra-ui/react";
+import { Toast } from "@chakra-ui/react";
 interface SearchButtonProps {
   summonerName: string;
   setSummonerName?: (val) => void;

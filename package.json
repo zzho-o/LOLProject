@@ -9,12 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@chakra-ui/react": "^3.8.1",
+    "@chakra-ui/react": "^3.13.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@shadcn/ui": "^0.0.4",
     "axios": "^1.7.9",
-    "framer-motion": "^12.4.7",
     "iron-session": "^8.0.4",
     "motion": "^12.0.5",
     "next": "15.1.3",
