@@ -1,5 +1,4 @@
 import { RecoilRoot, useRecoilState, useSetRecoilState } from "recoil";
-import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { ReactElement, ReactNode, useEffect, createContext } from "react";
 import Layout from "layout";
