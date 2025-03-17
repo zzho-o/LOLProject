@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import * as S from "./styles";
+import * as S from "../components/styles";
 import SearchButton from "@/components/common/SearchButton";
 import SearchInput from "@/components/common/SearchInput";
 import { fetchSummonerByRiotId } from "@/utils/api/api";
