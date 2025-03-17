@@ -1,7 +1,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import * as S from "../components/HomeStyles";
+// import * as S from "../components/HomeStyles";
+import styled from "@emotion/styled";
 import SearchButton from "@/components/common/SearchButton";
 import SearchInput from "@/components/common/SearchInput";
 import { fetchSummonerByRiotId } from "@/utils/api/api";
@@ -86,8 +87,8 @@ const Home = ({ summonerInfo, error }: any) => {
           </motion.div>
         </LayoutBodyOnly>
       ) : (
-        <S.MainContainer>
-          <S.BodyContainer>
+        <MainContainer>
+          <BodyContainer>
             <AnimatePresence>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -97,11 +98,46 @@ const Home = ({ summonerInfo, error }: any) => {
                 <ProfileCard />
               </motion.div>
             </AnimatePresence>
-          </S.BodyContainer>
-        </S.MainContainer>
+          </BodyContainer>
+        </MainContainer>
       )}
     </>
   );
 };
 
 export default Home;
+export const MainContainer = styled.div({
+  display: "flex",
+  flex: 1,
+  backgroundColor: "#FFFFFF",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "flex-start",
+  width: "100%",
+});
+
+export const BodyContainer = styled.div({
+  display: "flex",
+  maxWidth: 940,
+  position: "relative",
+});
+
+export const ContentsLeftContainer = styled.div({
+  display: "flex",
+  flex: 1,
+  flexDirection: "column",
+  alignItems: "center",
+});
+
+export const ContentsRightContainer = styled.div({
+  display: "flex",
+  flexDirection: "column",
+  height: "100%",
+  maxWidth: 240,
+});
+
+export const InputContainer = styled.div({
+  display: "flex",
+  flexDirection: "column",
+  width: "100%",
+});
