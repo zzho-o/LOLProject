@@ -2,8 +2,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import * as S from "./styles";
 import { colors } from "@/config/globalColors";
-import { atomLanguage, atomUserDetailInfo } from "@/utils/recoil/atoms";
-import { useRecoilState } from "recoil";
+import {
+  atomLanguage,
+  atomResolution,
+  atomUserDetailInfo,
+} from "@/utils/recoil/atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
 import Margin from "../common/Margin";
 import Image from "next/image";
 import {
@@ -18,14 +22,20 @@ import {
 import { useTranslation } from "next-i18next";
 import koData from "@/public/locales/ko/common.json";
 import enData from "@/public/locales/en/common.json";
+import { useRouter } from "next/router";
+import { Drawer, Button, Portal } from "@chakra-ui/react";
+import { HamburgerIcon } from "@chakra-ui/icons";
 
 const Header = () => {
   const [activeTab, setActiveTab] = useState("home");
   const [userInfo, setUserInfo] = useRecoilState(atomUserDetailInfo);
+  const resolution = useRecoilValue(atomResolution);
   const [labelLanguage, setLabelLanguage] = useState("한국어");
   const [lang, setLang] = useState("ko");
   const [language, setLanguage] = useRecoilState(atomLanguage);
   const { t, i18n } = useTranslation("common");
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
 
   const languageData = {
     ko: koData,
@@ -85,7 +95,11 @@ const Header = () => {
           ))}
         </S.NavContainer>
       ) : (
-        <S.TitleContainer>
+        <S.TitleContainer
+          onClick={() => {
+            router.push("/");
+          }}
+        >
           <S.TabButton isActive={false}>{language.title}</S.TabButton>
         </S.TitleContainer>
       )}
@@ -100,27 +114,67 @@ const Header = () => {
             {"logout"}
           </S.TabButton>
         )}
-        <SelectRoot collection={frameworks} size="sm" width="320px">
-          <SelectTrigger>
-            <div style={{ color: colors.WHITE }}>{labelLanguage}</div>
-          </SelectTrigger>
-          <SelectContent
-            style={{ position: "absolute", zIndex: 10, width: "100%" }}
-          >
-            {frameworks.items.map((lang) => (
-              <SelectItem
-                item={lang}
-                key={lang.value}
-                onClick={() => {
-                  setLabelLanguage(lang.label);
-                  setLang(lang.value); // `lang.value`로 i18n 언어 설정
-                }}
-              >
-                {lang.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </SelectRoot>
+        {resolution === "MOBILE" ? (
+          <>
+            <Drawer.Root open={open} onOpenChange={(e) => setOpen(e.open)}>
+              <Drawer.Trigger asChild>
+                <Button aria-label="Open menu" variant="outline">
+                  <Image
+                    src="/assets/HambergerMenu.png"
+                    alt="Background"
+                    objectFit="cover"
+                    fill
+                    quality={100}
+                    draggable={false}
+                  />
+                </Button>
+              </Drawer.Trigger>
+              <Portal>
+                <Drawer.Backdrop />
+                <Drawer.Positioner>
+                  <Drawer.Content>
+                    <Drawer.Header>
+                      <Drawer.Title>Drawer Title</Drawer.Title>
+                    </Drawer.Header>
+                    <Drawer.Body>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua.
+                      </p>
+                    </Drawer.Body>
+                    <Drawer.Footer>
+                      <Button variant="outline">Cancel</Button>
+                      <Button>Save</Button>
+                    </Drawer.Footer>
+                  </Drawer.Content>
+                </Drawer.Positioner>
+              </Portal>
+            </Drawer.Root>
+          </>
+        ) : (
+          <SelectRoot collection={frameworks} size="sm" width="320px">
+            <SelectTrigger>
+              <div style={{ color: colors.WHITE }}>{labelLanguage}</div>
+            </SelectTrigger>
+            <SelectContent
+              style={{ position: "absolute", zIndex: 10, width: "100%" }}
+            >
+              {frameworks.items.map((lang) => (
+                <SelectItem
+                  item={lang}
+                  key={lang.value}
+                  onClick={() => {
+                    setLabelLanguage(lang.label);
+                    setLang(lang.value);
+                  }}
+                >
+                  {lang.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </SelectRoot>
+        )}
       </div>
     </S.HeaderContainer>
   );

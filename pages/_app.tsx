@@ -18,6 +18,32 @@ type AppPropsWithLayout = AppProps & {
 const App = ({ children }: { children: ReactNode }) => {
   const [resolution, setResolution] = useRecoilState(atomResolution);
   const setWindow = useSetRecoilState(atomWindow);
+  useEffect(() => {
+    const handleWindowResize = () => {
+      const width = window.innerWidth;
+      if (width > 990) {
+        setResolution("PC");
+      } else if (width > 768) {
+        setResolution("TABLET");
+      } else {
+        setResolution("MOBILE");
+      }
+      setWindow({
+        innerWidth: window.innerWidth,
+        innerHeight: window.innerHeight,
+      });
+    };
+    handleWindowResize();
+    window.addEventListener("resize", handleWindowResize);
+    return () => window.removeEventListener("resize", handleWindowResize);
+  }, []);
+
+  useEffect(() => {
+    setWindow({
+      innerWidth: window.innerWidth,
+      innerHeight: window.innerHeight,
+    });
+  }, [resolution]);
 
   useEffect(() => {
     const handleWindowResize = () => {
