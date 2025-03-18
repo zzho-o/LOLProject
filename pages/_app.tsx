@@ -6,6 +6,7 @@ import { NextPage } from "next";
 import { atomResolution, atomWindow } from "@/utils/recoil/atoms";
 import { Provider } from "@/components/ui/provider";
 import { appWithTranslation } from "next-i18next";
+import { Toaster} from "@/components/ui/toaster"
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -73,6 +74,7 @@ const AppWrapper = ({ children }: { children: ReactNode }) => {
     <RecoilRoot>
       <Provider>
         <App>{children}</App>
+        <Toaster />
       </Provider>
     </RecoilRoot>
   );
