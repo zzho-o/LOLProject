@@ -41,6 +41,7 @@ const SearchInput = ({
   useEffect(() => {
     if(error){
       setState('error')
+      toaster.dismiss()
       toaster.create({
         description: language.nomatchingnicknamefound,
         type: "error",
