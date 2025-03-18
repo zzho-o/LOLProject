@@ -106,7 +106,7 @@ const SearchInput = ({
               </motion.div>
             </S.StyledButtonContainer>
           </S.BodyContainer>
-          <text>{state}</text>
+          
         </S.PCMainContainer>
       ) : (
         <S.MobileMainContainer>
@@ -157,7 +157,7 @@ const SearchInput = ({
               />
             </S.RowBox>
           </motion.div>
-          <text>{state}</text>
+          
         </S.MobileMainContainer>
       )}
     </S.AlertContainer>
