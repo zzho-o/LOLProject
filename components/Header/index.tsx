@@ -134,14 +134,30 @@ const Header = () => {
                 <Drawer.Positioner>
                   <Drawer.Content>
                     <Drawer.Header>
-                      <Drawer.Title>Drawer Title</Drawer.Title>
+                      <Drawer.Title>{language.language}</Drawer.Title>
                     </Drawer.Header>
                     <Drawer.Body>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua.
-                      </p>
+                    <SelectRoot collection={frameworks} size="sm" width="320px">
+            <SelectTrigger>
+              <div style={{ color: colors.BLACK }}>{labelLanguage}</div>
+            </SelectTrigger>
+            <SelectContent
+              style={{ position: "absolute", zIndex: 10, width: "100%" }}
+            >
+              {frameworks.items.map((lang) => (
+                <SelectItem
+                  item={lang}
+                  key={lang.value}
+                  onClick={() => {
+                    setLabelLanguage(lang.label);
+                    setLang(lang.value);
+                  }}
+                >
+                  {lang.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </SelectRoot>
                     </Drawer.Body>
                     <Drawer.Footer>
                       <Button variant="outline">Cancel</Button>
