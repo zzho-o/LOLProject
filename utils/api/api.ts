@@ -101,7 +101,7 @@ export const fetchChampionName = async (championIconId: string) => {
 export const fetchChampionImage = async (championIconId: string) => {
   try {
     const championName = await fetchChampionName(championIconId);
-    return `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${championName}_0.jpg`;
+    return `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${championName}_1.jpg`;
   } catch (error) {
     console.error("Error fetching champion image:", error);
     throw error;

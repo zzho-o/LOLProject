@@ -39,8 +39,9 @@ const Layout = ({ children }: ILayout) => {
             alt="Background"
             layout="fill"
             objectFit="cover"
+            objectPosition="center"
             quality={100}
-            style={{ opacity: 0.3 }}
+            style={{ opacity: 0.7 }}
             draggable={false}
           />
         </div>

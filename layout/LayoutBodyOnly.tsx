@@ -39,7 +39,7 @@ const LayoutBodyOnly = ({ children }: ILayout) => {
             objectFit="cover"
             objectPosition="center"
             quality={100}
-            style={{ opacity: 0.3 }}
+            style={{ opacity: 0.8 }}
             draggable={false}
           />
         </div>
