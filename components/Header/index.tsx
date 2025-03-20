@@ -46,9 +46,8 @@ const Header = () => {
   }, [i18n.language]);
 
   const tabs = [
-    { id: "home", label: "홈" },
-    { id: "record", label: "전적" },
-    { id: "ranking", label: "랭킹" },
+    { id: "LOL", label: "LOL" },
+    { id: "TFT", label: "TFT" },
   ];
 
   const frameworks = createListCollection({
@@ -109,9 +108,10 @@ const Header = () => {
             isActive={true}
             onClick={() => {
               setUserInfo(null);
+              router.push("/");
             }}
           >
-            {"logout"}
+            {language.logout}
           </S.TabButton>
         )}
         {resolution === "MOBILE" ? (
@@ -137,32 +137,39 @@ const Header = () => {
                       <Drawer.Title>{language.language}</Drawer.Title>
                     </Drawer.Header>
                     <Drawer.Body>
-                    <SelectRoot collection={frameworks} size="sm" width="320px">
-            <SelectTrigger>
-              <div style={{ color: colors.BLACK }}>{labelLanguage}</div>
-            </SelectTrigger>
-            <SelectContent
-              style={{ position: "absolute", zIndex: 10, width: "100%" }}
-            >
-              {frameworks.items.map((lang) => (
-                <SelectItem
-                  item={lang}
-                  key={lang.value}
-                  onClick={() => {
-                    setLabelLanguage(lang.label);
-                    setLang(lang.value);
-                  }}
-                >
-                  {lang.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </SelectRoot>
+                      <SelectRoot
+                        collection={frameworks}
+                        size="sm"
+                        width="320px"
+                      >
+                        <SelectTrigger>
+                          <div style={{ color: colors.BLACK }}>
+                            {labelLanguage}
+                          </div>
+                        </SelectTrigger>
+                        <SelectContent
+                          style={{
+                            position: "absolute",
+                            zIndex: 10,
+                            width: "100%",
+                          }}
+                        >
+                          {frameworks.items.map((lang) => (
+                            <SelectItem
+                              item={lang}
+                              key={lang.value}
+                              onClick={() => {
+                                setLabelLanguage(lang.label);
+                                setLang(lang.value);
+                              }}
+                            >
+                              {lang.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </SelectRoot>
                     </Drawer.Body>
-                    <Drawer.Footer>
-                      <Button variant="outline">Cancel</Button>
-                      <Button>Save</Button>
-                    </Drawer.Footer>
+                    <Drawer.Footer></Drawer.Footer>
                   </Drawer.Content>
                 </Drawer.Positioner>
               </Portal>

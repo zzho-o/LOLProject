@@ -6,9 +6,14 @@ import { motion } from "framer-motion";
 import Margin from "../Margin";
 import { useTranslation } from "next-i18next";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { atomLanguage, atomResolution, atomUserDetailInfo } from "@/utils/recoil/atoms";
+import {
+  atomLanguage,
+  atomResolution,
+  atomUserDetailInfo,
+} from "@/utils/recoil/atoms";
 import { Button } from "@chakra-ui/react";
-import { toaster } from "@/components/ui/toaster"
+import { toaster } from "@/components/ui/toaster";
+import { useRouter } from "next/router";
 interface SearchButtonProps {
   summonerName: string;
   setSummonerName?: (val) => void;
@@ -26,38 +31,36 @@ const SearchInput = ({
   const { t, i18n } = useTranslation("common");
   const [language, setLanguage] = useRecoilState(atomLanguage);
   const resolution = useRecoilValue(atomResolution);
-  const userInfo = useRecoilValue(atomUserDetailInfo)
-  const [state, setState] = useState<"stop" | "pending" | "error" | "clear">("stop");
+  const userInfo = useRecoilValue(atomUserDetailInfo);
+  const [state, setState] = useState<"stop" | "pending" | "error" | "clear">(
+    "stop"
+  );
+  const router = useRouter();
   const handleEnterKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      setState("pending")
+      setState("pending");
+      toaster.dismiss();
       toaster.create({
-          description: "searching...",
-          type: "loading",
-        })
+        description: "searching...",
+        type: "loading",
+      });
       handleSearch();
     }
   };
   useEffect(() => {
-    if(error){
-      setState('error')
-      toaster.dismiss()
+    console.log(userInfo);
+    if (error) {
+      setState("error");
+      toaster.dismiss();
       toaster.create({
         description: language.nomatchingnicknamefound,
         type: "error",
-      })
+      });
+      router.push("/");
+    } else {
+      ("stop");
     }
-    else if(userInfo){
-      setState('clear')
-      toaster.create({
-        description: language.enjoyit,
-        type: "error",
-      })
-    }
-    else{
-      "stop"
-    }
-  },[error,userInfo])
+  }, [error, userInfo]);
 
   return (
     <S.AlertContainer>
@@ -96,17 +99,18 @@ const SearchInput = ({
                   searchButton
                   title={language.start}
                   handleSearch={() => {
-                    setState("pending")
+                    setState("pending");
+                    toaster.dismiss();
                     toaster.create({
                       description: "searching...",
                       type: "loading",
-                    })
-                    handleSearch()}}
+                    });
+                    handleSearch();
+                  }}
                 />
               </motion.div>
             </S.StyledButtonContainer>
           </S.BodyContainer>
-          
         </S.PCMainContainer>
       ) : (
         <S.MobileMainContainer>
@@ -147,17 +151,18 @@ const SearchInput = ({
                 searchButton
                 title={language.start}
                 handleSearch={() => {
-                  setState("pending")
+                  setState("pending");
+                  toaster.dismiss();
                   toaster.create({
-          description: "searching...",
-          type: "loading",
-        })
-                  handleSearch()}}
+                    description: "searching...",
+                    type: "loading",
+                  });
+                  handleSearch();
+                }}
                 mobile
               />
             </S.RowBox>
           </motion.div>
-          
         </S.MobileMainContainer>
       )}
     </S.AlertContainer>

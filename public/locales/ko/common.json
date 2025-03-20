@@ -3,6 +3,10 @@
   "betanotice": "beta버전이므로 KR태그만 지원합니다.",
   "nomatchingnicknamefound": "일치하는 닉네임이 없습니다.",
   "start": "시작 !!",
-  "enjoyit" : "즐겨봐 !",
-  "language" :"언어"
+  "enjoyit": "즐겨봐 !",
+  "language": "언어",
+  "home": "홈",
+  "record": "전적",
+  "ranking": "랭킹",
+  "logout": "로그아웃"
 }

@@ -19,6 +19,7 @@ export type getNameTag = {
 
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+import { toaster } from "@/components/ui/toaster";
 
 export const getServerSideProps = async (context: any) => {
   const { locale, query } = context;
@@ -58,6 +59,7 @@ const Home = ({ summonerInfo, error }: any) => {
   const [summonerName, setSummonerName] = useState("");
   const router = useRouter();
   const [userInfo, setUserInfo] = useRecoilState(atomUserDetailInfo);
+  const [language, setLanguage] = useRecoilState(atomLanguage);
 
   const handleSearch = () => {
     if (summonerName.trim()) {
@@ -67,6 +69,15 @@ const Home = ({ summonerInfo, error }: any) => {
   useEffect(() => {
     setUserInfo(summonerInfo);
   }, [summonerInfo]);
+  useEffect(() => {
+    toaster.dismiss();
+    if (userInfo) {
+      toaster.create({
+        description: language.enjoyit,
+        type: "success",
+      });
+    }
+  }, [userInfo]);
 
   return (
     <>
@@ -109,7 +120,6 @@ export default Home;
 export const MainContainer = styled.div({
   display: "flex",
   flex: 1,
-  backgroundColor: "#FFFFFF",
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "flex-start",

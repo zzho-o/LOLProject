@@ -82,4 +82,21 @@ export const fetchSummonerImage = async (profileIconId: number) => {
     throw error;
   }
 };
+
+/**
+ * USER_INFO
+ */
+export const fetchSummonerMastery = async (puuid: string) => {
+  try {
+    const version = await getLatestVersion();
+    const response = await RIOT_SUMMONER_API.get(
+      `/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching summoner image:", error);
+    throw error;
+  }
+};
+
 export const fetchSummonerByPuuid = {};

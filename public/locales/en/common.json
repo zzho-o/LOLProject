@@ -3,6 +3,10 @@
   "betanotice": "Only the KR tag is supported as it is in the beta version.",
   "nomatchingnicknamefound": "No matching nickname found.",
   "start": "start !!",
-  "enjoyit" : "Enjoy it !",
-  "language" :"Language"
+  "enjoyit": "Enjoy it !",
+  "language": "Language",
+  "home": "Home",
+  "record": "Record",
+  "ranking": "Ranking",
+  "logout": "Logout"
 }
