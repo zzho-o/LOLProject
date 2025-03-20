@@ -148,7 +148,12 @@ const Header = () => {
                         size="sm"
                         width="320px"
                       >
-                        <SelectTrigger>
+                        <SelectTrigger
+                          style={{
+                            backgroundColor: colors.WHITE,
+                            color: colors.BLACK,
+                          }}
+                        >
                           <div style={{ color: colors.BLACK }}>
                             {labelLanguage}
                           </div>
@@ -184,11 +189,7 @@ const Header = () => {
         ) : (
           <SelectRoot collection={frameworks} size="sm" width="320px">
             <SelectTrigger>
-              <div
-                style={{ backgroundColor: colors.WHITE, color: colors.BLACK }}
-              >
-                {labelLanguage}
-              </div>
+              <div style={{ color: colors.WHITE }}>{labelLanguage}</div>
             </SelectTrigger>
             <SelectContent
               style={{ position: "absolute", zIndex: 10, width: "100%" }}
