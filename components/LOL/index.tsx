@@ -1,12 +1,38 @@
 import { motion, AnimatePresence } from "framer-motion";
 import * as S from "./styles";
 import ProfileCard from "../ProfileCard";
-import { useRecoilValue } from "recoil";
-import { atomResolution, atomUserDetailInfo } from "@/utils/recoil/atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  atomBackgroundURL,
+  atomResolution,
+  atomUserDetailInfo,
+} from "@/utils/recoil/atoms";
 import Margin from "../common/Margin";
-const LOL = () => {
+import { useEffect } from "react";
+import { fetchChampionImage } from "@/utils/api/api";
+
+const LOL = ({ mastery }) => {
   const userInfo = useRecoilValue(atomUserDetailInfo);
   const resolution = useRecoilValue(atomResolution);
+  const [backgroundURL, setBackgroundURL] = useRecoilState(atomBackgroundURL);
+  useEffect(() => {
+    if (mastery?.[0].championId ?? "") {
+      setBackgroundURL(null);
+    }
+
+    const fetchImage = async () => {
+      try {
+        if (mastery?.[0].championId ?? "") {
+          const imageurl = await fetchChampionImage(mastery[0]?.championId);
+          setBackgroundURL(imageurl);
+        }
+      } catch (err) {
+        console.error("Error fetching champion image:", err);
+      }
+    };
+
+    fetchImage();
+  }, [mastery]);
   return (
     <S.MainContainer>
       <Margin H={resolution === "MOBILE" ? 10 : 20} />

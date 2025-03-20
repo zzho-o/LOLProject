@@ -8,7 +8,7 @@ const getLatestVersion = async () => {
 };
 
 const RIOT_ACCOUNT_API = axios.create({
-  baseURL: process.env.RIOT_API_ACCOUNT_BASE_URL, // Riot API의 base URL
+  baseURL: process.env.RIOT_API_ACCOUNT_BASE_URL,
   timeout: 1000 * 10,
   headers: {
     "User-Agent":
@@ -56,7 +56,7 @@ export const fetchSummonerByRiotId = async (gameName: string) => {
       `/riot/account/v1/accounts/by-riot-id/${gameName}/${process.env.TAG}`
     );
     const response = await RIOT_SUMMONER_API.get(
-      `https://KR.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid.data.puuid}`
+      `/lol/summoner/v4/summoners/by-puuid/${puuid.data.puuid}`
     );
     console.log(puuid);
     return { ...puuid.data, ...response.data };
@@ -69,19 +69,7 @@ export const fetchSummonerByRiotId = async (gameName: string) => {
 /**
  * GAME_IMAGE
  */
-// export const fetchSummonerImage = async (profileIconId: number) => {
-//   try {
-//     const version = await getLatestVersion();
-//     const response = await RIOT_IMAGE_API.get(
-//       `/cdn/${version}/img/profileicon/${profileIconId}.png`,
-//       { responseType: "blob" }
-//     );
-//     return URL.createObjectURL(response.data);
-//   } catch (error) {
-//     console.error("Error fetching summoner image:", error);
-//     throw error;
-//   }
-// };
+
 export const fetchSummonerImage = async (profileIconId: number) => {
   try {
     const version = await getLatestVersion();
@@ -92,15 +80,41 @@ export const fetchSummonerImage = async (profileIconId: number) => {
   }
 };
 
+export const fetchChampionName = async (championIconId: string) => {
+  try {
+    const version = await getLatestVersion();
+    const response = await axios.get(
+      `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`
+    );
+    const champions = response.data.data;
+    for (let i in champions) {
+      if (champions[i].key === String(championIconId)) {
+        return i;
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching champion Name:", error);
+    throw error;
+  }
+};
+
+export const fetchChampionImage = async (championIconId: string) => {
+  try {
+    const championName = await fetchChampionName(championIconId);
+    return `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${championName}_0.jpg`;
+  } catch (error) {
+    console.error("Error fetching champion image:", error);
+    throw error;
+  }
+};
 /**
  * USER_INFO
  */
 export const fetchSummonerMastery = async (puuid: string) => {
+  const url = `/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}`;
+
   try {
-    const version = await getLatestVersion();
-    const response = await RIOT_SUMMONER_API.get(
-      `/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}`
-    );
+    const response = await RIOT_SUMMONER_API.get(url);
     return response.data;
   } catch (error) {
     console.error("Error fetching summoner image:", error);

@@ -113,7 +113,6 @@ const Header = () => {
           <S.TabButton
             isActive={true}
             onClick={() => {
-              setUserInfo(null);
               router.push("/");
             }}
           >

@@ -1,11 +1,14 @@
+import { atomBackgroundURL } from "@/utils/recoil/atoms";
 import Image from "next/image";
 import React from "react";
 import { ReactNode } from "react";
+import { useRecoilValue } from "recoil";
 
 interface ILayout {
   children: ReactNode;
 }
 const LayoutBodyOnly = ({ children }: ILayout) => {
+  const backgroundURL = useRecoilValue(atomBackgroundURL);
   return (
     <div
       style={{
@@ -30,10 +33,11 @@ const LayoutBodyOnly = ({ children }: ILayout) => {
           }}
         >
           <Image
-            src="/assets/Background.png"
+            src={backgroundURL ? backgroundURL : "/assets/Background.png"}
             alt="Background"
             layout="fill"
             objectFit="cover"
+            objectPosition="center"
             quality={100}
             style={{ opacity: 0.3 }}
             draggable={false}

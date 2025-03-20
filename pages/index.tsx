@@ -5,9 +5,10 @@ import { useRouter } from "next/router";
 import styled from "@emotion/styled";
 import SearchButton from "@/components/common/SearchButton";
 import SearchInput from "@/components/common/SearchInput";
-import { fetchSummonerByRiotId } from "@/utils/api/api";
+import { fetchSummonerByRiotId, fetchSummonerMastery } from "@/utils/api/api";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
+  atomBackgroundURL,
   atomGameTap,
   atomLanguage,
   atomUserDetailInfo,
@@ -35,6 +36,7 @@ export const getServerSideProps = async (context: any) => {
     return {
       props: {
         summonerInfo: null,
+        mastery: null,
         ...(await serverSideTranslations(locale, ["common"])),
       },
     };
@@ -42,10 +44,12 @@ export const getServerSideProps = async (context: any) => {
 
   try {
     const summonerInfo = await fetchSummonerByRiotId(name);
+    const mastery = await fetchSummonerMastery(summonerInfo.puuid);
     return {
       props: {
         summonerInfo,
         error: false,
+        mastery,
         ...(await serverSideTranslations(locale, ["common"])),
       },
     };
@@ -55,17 +59,19 @@ export const getServerSideProps = async (context: any) => {
       props: {
         summonerInfo: null,
         error: true,
+        mastery: null,
         ...(await serverSideTranslations(locale, ["common"])),
       },
     };
   }
 };
 
-const Home = ({ summonerInfo, error }: any) => {
+const Home = ({ summonerInfo, error, mastery }: any) => {
   const [summonerName, setSummonerName] = useState("");
   const router = useRouter();
   const [userInfo, setUserInfo] = useRecoilState(atomUserDetailInfo);
   const [language, setLanguage] = useRecoilState(atomLanguage);
+  const [backgroundURL, setBackgroundURL] = useRecoilState(atomBackgroundURL);
   const game = useRecoilValue(atomGameTap);
 
   const handleSearch = () => {
@@ -75,6 +81,7 @@ const Home = ({ summonerInfo, error }: any) => {
   };
   useEffect(() => {
     setUserInfo(summonerInfo);
+    setBackgroundURL(mastery);
   }, [summonerInfo]);
   useEffect(() => {
     toaster.dismiss();
@@ -106,16 +113,7 @@ const Home = ({ summonerInfo, error }: any) => {
         </LayoutBodyOnly>
       ) : (
         <MainContainer>
-          {game === "LOL" ? <LOL /> : <TFT />}
-          {/* <AnimatePresence>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <ProfileCard />
-            </motion.div>
-          </AnimatePresence> */}
+          {game === "LOL" ? <LOL mastery={mastery} /> : <TFT />}
         </MainContainer>
       )}
     </>
