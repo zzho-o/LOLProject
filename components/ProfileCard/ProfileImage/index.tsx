@@ -1,12 +1,13 @@
 import { useRecoilValue } from "recoil";
 import * as S from "./styles";
-import { atomUserDetailInfo } from "@/utils/recoil/atoms";
+import { atomResolution, atomUserDetailInfo } from "@/utils/recoil/atoms";
 import { fetchSummonerImage } from "@/utils/api/api";
 import { useEffect, useState } from "react";
 
 const ProfileImage = ({ summonerInfo, error }: any) => {
   const userInfo = useRecoilValue(atomUserDetailInfo);
   const [profileImgUrl, setProfileImgUrl] = useState(null);
+  const resolution = useRecoilValue(atomResolution);
   useEffect(() => {
     if (!userInfo?.profileIconId) {
       setProfileImgUrl(null);
@@ -26,7 +27,12 @@ const ProfileImage = ({ summonerInfo, error }: any) => {
 
   return (
     <S.MainContainer>
-      <S.profileImageStyle src={profileImgUrl} alt="profile" />
+      <S.profileImageStyle
+        width={resolution === "MOBILE" ? 70 : 100}
+        height={resolution === "MOBILE" ? 70 : 100}
+        src={profileImgUrl}
+        alt="profile"
+      />
     </S.MainContainer>
   );
 };

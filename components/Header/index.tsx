@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import * as S from "./styles";
 import { colors } from "@/config/globalColors";
 import {
+  atomGameTap,
   atomLanguage,
   atomResolution,
   atomUserDetailInfo,
@@ -36,6 +37,7 @@ const Header = () => {
   const { t, i18n } = useTranslation("common");
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [game, setGame] = useRecoilState(atomGameTap);
 
   const languageData = {
     ko: koData,
@@ -45,11 +47,12 @@ const Header = () => {
     setLanguage(languageData[i18n.language] || {});
   }, [i18n.language]);
 
-  const tabs = [
+  type GameType = "LOL" | "TFT";
+
+  const tabs: { id: GameType; label: GameType }[] = [
     { id: "LOL", label: "LOL" },
     { id: "TFT", label: "TFT" },
   ];
-
   const frameworks = createListCollection({
     items: [
       { label: "한국어", value: "ko" },
@@ -72,7 +75,10 @@ const Header = () => {
           {tabs.map((tab) => (
             <S.TabButton
               key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => {
+                setActiveTab(tab.id);
+                setGame(tab.label);
+              }}
               isActive={activeTab === tab.id}
             >
               {tab.label}
@@ -114,6 +120,7 @@ const Header = () => {
             {language.logout}
           </S.TabButton>
         )}
+
         {resolution === "MOBILE" ? (
           <>
             <Drawer.Root open={open} onOpenChange={(e) => setOpen(e.open)}>

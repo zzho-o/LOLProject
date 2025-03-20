@@ -20,3 +20,13 @@ export const atomLanguage = atom<any>({
   key: "atomLanguage",
   default: {},
 });
+
+export const atomGameTap = atom<"LOL" | "TFT">({
+  key: "atomGameTap",
+  default: "LOL",
+});
+
+export const atomBackgroundURL = atom<string>({
+  key: "atomBackgroundURL",
+  default: "",
+});

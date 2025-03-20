@@ -6,8 +6,12 @@ import styled from "@emotion/styled";
 import SearchButton from "@/components/common/SearchButton";
 import SearchInput from "@/components/common/SearchInput";
 import { fetchSummonerByRiotId } from "@/utils/api/api";
-import { useRecoilState } from "recoil";
-import { atomLanguage, atomUserDetailInfo } from "@/utils/recoil/atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  atomGameTap,
+  atomLanguage,
+  atomUserDetailInfo,
+} from "@/utils/recoil/atoms";
 import ProfileCard from "@/components/ProfileCard";
 import LayoutBodyOnly from "@/layout/LayoutBodyOnly";
 
@@ -20,6 +24,8 @@ export type getNameTag = {
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import { toaster } from "@/components/ui/toaster";
+import LOL from "@/components/LOL";
+import TFT from "@/components/TFT";
 
 export const getServerSideProps = async (context: any) => {
   const { locale, query } = context;
@@ -60,6 +66,7 @@ const Home = ({ summonerInfo, error }: any) => {
   const router = useRouter();
   const [userInfo, setUserInfo] = useRecoilState(atomUserDetailInfo);
   const [language, setLanguage] = useRecoilState(atomLanguage);
+  const game = useRecoilValue(atomGameTap);
 
   const handleSearch = () => {
     if (summonerName.trim()) {
@@ -99,17 +106,16 @@ const Home = ({ summonerInfo, error }: any) => {
         </LayoutBodyOnly>
       ) : (
         <MainContainer>
-          <BodyContainer>
-            <AnimatePresence>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <ProfileCard />
-              </motion.div>
-            </AnimatePresence>
-          </BodyContainer>
+          {game === "LOL" ? <LOL /> : <TFT />}
+          {/* <AnimatePresence>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <ProfileCard />
+            </motion.div>
+          </AnimatePresence> */}
         </MainContainer>
       )}
     </>
@@ -124,12 +130,6 @@ export const MainContainer = styled.div({
   alignItems: "center",
   justifyContent: "flex-start",
   width: "100%",
-});
-
-export const BodyContainer = styled.div({
-  display: "flex",
-  maxWidth: 940,
-  position: "relative",
 });
 
 export const ContentsLeftContainer = styled.div({
