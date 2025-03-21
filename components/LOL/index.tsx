@@ -69,7 +69,70 @@ const LOL = ({ mastery, lotation, userLeagueInfo }) => {
         >
           {userInfo.gameName + "#KR"}
         </S.RowBox>
+        <Margin W={resolution === "MOBILE" ? 40 : 20} />
+        <Box
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Image
+            src={
+              // src={backgroundURL ? backgroundURL : "/assets/Background.png"}
+              userLeagueInfo?.[0].tier === "CHALLENGER"
+                ? "/assets/TierChallenger.png"
+                : userLeagueInfo?.[0].tier === "GRANDMASTER"
+                ? "/assets/TierGrandMaster.png"
+                : userLeagueInfo?.[0].tier === "MASTER"
+                ? "/assets/TierMaster.png"
+                : userLeagueInfo?.[0].tier === "DIAMOND"
+                ? "/assets/TierDiamond.png"
+                : userLeagueInfo?.[0].tier === "EMERALD"
+                ? "/assets/TierEmerald.png"
+                : userLeagueInfo?.[0].tier === "PLATINUM"
+                ? "/assets/TierPlatinum.png"
+                : userLeagueInfo?.[0].tier === "GOLD"
+                ? "/assets/TierGold.png"
+                : userLeagueInfo?.[0].tier === "SILVER"
+                ? "/assets/TierSilver.png"
+                : userLeagueInfo?.[0].tier === "BRONZE"
+                ? "/assets/TierBronze.png"
+                : "/assets/TierIron.png"
+            }
+            alt="champion"
+            width={resolution === "MOBILE" ? 100 : 150}
+            height={resolution === "MOBILE" ? 100 : 150}
+            quality={100}
+            draggable={false}
+          />
+          {resolution === "MOBILE" ? (
+            <S.RowBox
+              style={{
+                fontSize: 20,
+                color: colors.WHITE,
+                textShadow: "2px 2px 4px black",
+              }}
+            >
+              <Margin W={20} />
+              {`${userLeagueInfo?.[0].tier} ${userLeagueInfo?.[0].rank}`}
+            </S.RowBox>
+          ) : null}
+        </Box>
+        {resolution === "MOBILE" ? null : (
+          <S.RowBox
+            style={{
+              fontSize: 20,
+              color: colors.WHITE,
+              textShadow: "2px 2px 4px black",
+            }}
+          >
+            <Margin W={20} />
+            {`${userLeagueInfo?.[0].tier} ${userLeagueInfo?.[0].rank}`}
+          </S.RowBox>
+        )}
       </S.RowBox>
+
       <Margin H={resolution === "MOBILE" ? 10 : 20} />
       <S.RowBox
         style={{
