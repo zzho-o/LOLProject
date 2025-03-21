@@ -5,7 +5,13 @@ import { useRouter } from "next/router";
 import styled from "@emotion/styled";
 import SearchButton from "@/components/common/SearchButton";
 import SearchInput from "@/components/common/SearchInput";
-import { fetchSummonerByRiotId, fetchSummonerMastery } from "@/utils/api/api";
+import {
+  fetchLotationChampions,
+  fetchSelectChampionImage,
+  fetchSummonerByRiotId,
+  fetchSummonerLeagueInfo,
+  fetchSummonerMastery,
+} from "@/utils/api/api";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   atomBackgroundURL,
@@ -27,6 +33,7 @@ import { useTranslation } from "next-i18next";
 import { toaster } from "@/components/ui/toaster";
 import LOL from "@/components/LOL";
 import TFT from "@/components/TFT";
+import { dataAttr } from "node_modules/@chakra-ui/react/dist/types/utils";
 
 export const getServerSideProps = async (context: any) => {
   const { locale, query } = context;
@@ -37,6 +44,8 @@ export const getServerSideProps = async (context: any) => {
       props: {
         summonerInfo: null,
         mastery: null,
+        userLeagueInfo: null,
+        lotation: null,
         ...(await serverSideTranslations(locale, ["common"])),
       },
     };
@@ -45,10 +54,14 @@ export const getServerSideProps = async (context: any) => {
   try {
     const summonerInfo = await fetchSummonerByRiotId(name);
     const mastery = await fetchSummonerMastery(summonerInfo.puuid);
+    const lotation = await fetchLotationChampions();
+    const userLeagueInfo = await fetchSummonerLeagueInfo(summonerInfo.puuid);
     return {
       props: {
         summonerInfo,
         error: false,
+        lotation,
+        userLeagueInfo,
         mastery,
         ...(await serverSideTranslations(locale, ["common"])),
       },
@@ -60,28 +73,46 @@ export const getServerSideProps = async (context: any) => {
         summonerInfo: null,
         error: true,
         mastery: null,
+        userLeagueInfo: null,
+        lotation: null,
         ...(await serverSideTranslations(locale, ["common"])),
       },
     };
   }
 };
 
-const Home = ({ summonerInfo, error, mastery }: any) => {
+const Home = ({
+  summonerInfo,
+  error,
+  mastery,
+  lotation,
+  userLeagueInfo,
+}: any) => {
   const [summonerName, setSummonerName] = useState("");
   const router = useRouter();
   const [userInfo, setUserInfo] = useRecoilState(atomUserDetailInfo);
   const [language, setLanguage] = useRecoilState(atomLanguage);
   const [backgroundURL, setBackgroundURL] = useRecoilState(atomBackgroundURL);
   const game = useRecoilValue(atomGameTap);
+  const [lotationUrl, setLotationUrl] = useState([]);
 
   const handleSearch = () => {
     if (summonerName.trim()) {
       router.push(`/?name=${summonerName}`);
     }
   };
+  const fetchImages = async () => {
+    if (!lotation?.freeChampionIds) return [];
+    const urls = await Promise.all(
+      lotation.freeChampionIds.map((id) => fetchSelectChampionImage(id))
+    );
+
+    setLotationUrl(urls);
+  };
   useEffect(() => {
     setUserInfo(summonerInfo);
     setBackgroundURL(mastery);
+    fetchImages();
   }, [summonerInfo]);
   useEffect(() => {
     toaster.dismiss();
@@ -113,7 +144,15 @@ const Home = ({ summonerInfo, error, mastery }: any) => {
         </LayoutBodyOnly>
       ) : (
         <MainContainer>
-          {game === "LOL" ? <LOL mastery={mastery} /> : <TFT />}
+          {game === "LOL" ? (
+            <LOL
+              mastery={mastery}
+              lotation={lotationUrl}
+              userLeagueInfo={userLeagueInfo}
+            />
+          ) : (
+            <TFT />
+          )}
         </MainContainer>
       )}
     </>

@@ -107,6 +107,18 @@ export const fetchChampionImage = async (championIconId: string) => {
     throw error;
   }
 };
+
+export const fetchSelectChampionImage = async (championIconId: string) => {
+  const version = await getLatestVersion();
+  const championName = await fetchChampionName(championIconId);
+  try {
+    return `https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${championName}.png`;
+  } catch (error) {
+    console.error("Error fetching champion image:", error);
+    throw error;
+  }
+};
+
 /**
  * USER_INFO
  */
@@ -118,6 +130,32 @@ export const fetchSummonerMastery = async (puuid: string) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching summoner image:", error);
+    throw error;
+  }
+};
+
+export const fetchSummonerLeagueInfo = async (puuid: string) => {
+  const url = `/lol/league/v4/entries/by-puuid/${puuid}`;
+  try {
+    const response = await RIOT_SUMMONER_API.get(url);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching Summoner League Info:", error);
+    throw error;
+  }
+};
+
+/**
+ * GAME_INFO
+ */
+export const fetchLotationChampions = async () => {
+  const url = `/lol/platform/v3/champion-rotations`;
+
+  try {
+    const response = await RIOT_SUMMONER_API.get(url);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching lotation champions:", error);
     throw error;
   }
 };
