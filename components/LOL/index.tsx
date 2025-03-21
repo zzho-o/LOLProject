@@ -160,9 +160,10 @@ const LOL = ({ mastery, lotation, userLeagueInfo }) => {
               borderWidth="1px"
               style={{ display: "flex", width: "auto" }}
             >
-              {lotation.map((item) => {
+              {lotation.map((item, idx) => {
                 return (
                   <Image
+                    key={idx}
                     src={item}
                     alt="champion"
                     width={30}
