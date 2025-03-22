@@ -29,7 +29,7 @@ const LOL = ({
   mastery: any;
   lotation: any;
   userLeagueInfo: any;
-  userMatchInfo: TMatchRecord;
+  userMatchInfo: TMatchRecord[];
 }) => {
   const userInfo = useRecoilValue(atomUserDetailInfo);
   const resolution = useRecoilValue(atomResolution);
@@ -37,6 +37,8 @@ const LOL = ({
   const language = useRecoilValue(atomLanguage);
   const MobileLotationFirstRow = [];
   const MobileLotationSecondRow = [];
+  const mat = userMatchInfo[0];
+  console.log(mat);
 
   lotation.forEach((item, idx) => {
     if (idx < Math.ceil(lotation.length / 2)) {
@@ -284,18 +286,28 @@ const LOL = ({
       <Margin H={resolution === "MOBILE" ? 10 : 20} />
       {/* record */}
       <Stack style={{ width: "100%", padding: 30 }}>
-        <Card.Root
+        {/* <Card.Root
           size="lg"
           style={{ opacity: 0.8, boxShadow: `0 4px 6px ${colors.BLACK}` }}
-        >
-          <Card.Header>
-            <Heading size="md"> Card - lg</Heading>
-          </Card.Header>
-          <Card.Body color="fg.muted">
-            This is the card body. Lorem ipsum dolor sit amet, consectetur
-            adipiscing elit.
-          </Card.Body>
-        </Card.Root>
+        > */}
+        {userMatchInfo.map(() => {
+          return (
+            <>
+              <Card.Root
+                size="lg"
+                style={{ opacity: 0.8, boxShadow: `0 4px 6px ${colors.BLACK}` }}
+              >
+                <Card.Header>
+                  <Heading size="md"> Card - sm</Heading>
+                </Card.Header>
+                <Card.Body color="fg.muted">
+                  This is the card body. Lorem ipsum dolor sit amet, consectetur
+                  adipiscing elit.
+                </Card.Body>
+              </Card.Root>
+            </>
+          );
+        })}
       </Stack>
       {/* record */}
     </S.MainContainer>
