@@ -44,7 +44,7 @@ export const getServerSideProps = async (context: any) => {
       props: {
         summonerInfo: null,
         mastery: null,
-        userLeagueInfo: null,
+        userLeagueInfo: [],
         lotation: null,
         ...(await serverSideTranslations(locale, ["common"])),
       },
@@ -73,7 +73,7 @@ export const getServerSideProps = async (context: any) => {
         summonerInfo: null,
         error: true,
         mastery: null,
-        userLeagueInfo: null,
+        userLeagueInfo: [],
         lotation: null,
         ...(await serverSideTranslations(locale, ["common"])),
       },
