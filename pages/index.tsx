@@ -11,6 +11,7 @@ import {
   fetchSummonerByRiotId,
   fetchSummonerLeagueInfo,
   fetchSummonerMastery,
+  fetchUserMatchRecord,
 } from "@/utils/api/api";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
@@ -45,6 +46,7 @@ export const getServerSideProps = async (context: any) => {
         summonerInfo: null,
         mastery: null,
         userLeagueInfo: [],
+        userMatchInfo: [],
         lotation: null,
         ...(await serverSideTranslations(locale, ["common"])),
       },
@@ -56,12 +58,14 @@ export const getServerSideProps = async (context: any) => {
     const mastery = await fetchSummonerMastery(summonerInfo.puuid);
     const lotation = await fetchLotationChampions();
     const userLeagueInfo = await fetchSummonerLeagueInfo(summonerInfo.puuid);
+    const userMatchInfo = await fetchUserMatchRecord(summonerInfo.puuid);
     return {
       props: {
         summonerInfo,
         error: false,
         lotation,
         userLeagueInfo,
+        userMatchInfo,
         mastery,
         ...(await serverSideTranslations(locale, ["common"])),
       },
@@ -74,6 +78,7 @@ export const getServerSideProps = async (context: any) => {
         error: true,
         mastery: null,
         userLeagueInfo: [],
+        userMatchInfo: [],
         lotation: null,
         ...(await serverSideTranslations(locale, ["common"])),
       },
@@ -85,6 +90,7 @@ const Home = ({
   summonerInfo,
   error,
   mastery,
+  userMatchInfo,
   lotation,
   userLeagueInfo,
 }: any) => {
@@ -149,6 +155,7 @@ const Home = ({
               mastery={mastery}
               lotation={lotationUrl}
               userLeagueInfo={userLeagueInfo}
+              userMatchInfo={userMatchInfo}
             />
           ) : (
             <TFT />

@@ -1,4 +1,6 @@
 import axios from "axios";
+import { TMatchRecord } from "./types";
+import pLimit from "p-limit";
 
 const getLatestVersion = async () => {
   const response = await axios.get(
@@ -6,7 +8,6 @@ const getLatestVersion = async () => {
   );
   return response.data[0];
 };
-
 const RIOT_ACCOUNT_API = axios.create({
   baseURL: process.env.RIOT_API_ACCOUNT_BASE_URL,
   timeout: 1000 * 10,
@@ -22,6 +23,19 @@ const RIOT_ACCOUNT_API = axios.create({
 
 const RIOT_SUMMONER_API = axios.create({
   baseURL: process.env.RIOT_API_SUMMONER_BASE_URL,
+  timeout: 1000 * 10,
+  headers: {
+    "User-Agent":
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+    "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
+    "Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
+    Origin: "https://developer.riotgames.com",
+    "X-Riot-Token": process.env.RIOT_API_KEY,
+  },
+});
+
+const RIOT_ASIA_API = axios.create({
+  baseURL: process.env.RIOT_API_ASIA,
   timeout: 1000 * 10,
   headers: {
     "User-Agent":
@@ -160,4 +174,37 @@ export const fetchLotationChampions = async () => {
   }
 };
 
-export const fetchSummonerByPuuid = {};
+export const fetchUserMatch = async (puuid: string) => {
+  const url = `/lol/match/v5/matches/by-puuid/${puuid}/ids?api_key=${process.env.RIOT_API_KEY}`;
+  try {
+    const response = await RIOT_ASIA_API.get(url);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching Match:", error);
+    throw error;
+  }
+};
+
+export const fetchUserMatchRecord = async (
+  puuid: string
+): Promise<TMatchRecord[]> => {
+  try {
+    const matchIds = await fetchUserMatch(puuid);
+
+    const limit = pLimit(3); // 동시에 3개씩 요청 보내기
+    const matchs: TMatchRecord[] = await Promise.all(
+      matchIds.map((matchId) =>
+        limit(async () => {
+          const url = `/lol/match/v5/matches/${matchId}`;
+          const response = await RIOT_ASIA_API.get(url);
+          return response.data.info as TMatchRecord;
+        })
+      )
+    );
+
+    return matchs;
+  } catch (error) {
+    console.error("Error fetching Match:", error);
+    throw error;
+  }
+};

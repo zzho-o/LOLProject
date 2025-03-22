@@ -15,11 +15,22 @@ import {
   fetchLotationChampions,
   fetchSelectChampionImage,
 } from "@/utils/api/api";
-import { Box, Collapsible } from "@chakra-ui/react";
+import { Box, Collapsible, Card, Heading, Stack } from "@chakra-ui/react";
 import { colors } from "@/config/globalColors";
 import Image from "next/image";
+import { TMatchRecord } from "@/utils/api/types";
 
-const LOL = ({ mastery, lotation, userLeagueInfo }) => {
+const LOL = ({
+  mastery,
+  lotation,
+  userLeagueInfo,
+  userMatchInfo,
+}: {
+  mastery: any;
+  lotation: any;
+  userLeagueInfo: any;
+  userMatchInfo: TMatchRecord;
+}) => {
   const userInfo = useRecoilValue(atomUserDetailInfo);
   const resolution = useRecoilValue(atomResolution);
   const [backgroundURL, setBackgroundURL] = useRecoilState(atomBackgroundURL);
@@ -136,7 +147,13 @@ const LOL = ({ mastery, lotation, userLeagueInfo }) => {
                 }}
               >
                 <Margin W={20} />
-                {`${userLeagueInfo?.[0].tier} ${userLeagueInfo?.[0].rank}`}
+                {`${userLeagueInfo?.[0].tier} ${
+                  ["CHALLENGER", "GRANDMASTER", "MASTER"].includes(
+                    userLeagueInfo?.[0].tier
+                  )
+                    ? ""
+                    : userLeagueInfo?.[0].rank
+                }`}
               </S.RowBox>
             ) : (
               <S.RowBox
@@ -161,7 +178,13 @@ const LOL = ({ mastery, lotation, userLeagueInfo }) => {
             }}
           >
             <Margin W={20} />
-            {`${userLeagueInfo?.[0].tier} ${userLeagueInfo?.[0].rank}`}
+            {`${userLeagueInfo?.[0].tier} ${
+              ["CHALLENGER", "GRANDMASTER", "MASTER"].includes(
+                userLeagueInfo?.[0].tier
+              )
+                ? ""
+                : userLeagueInfo?.[0].rank
+            }`}
           </S.RowBox>
         ) : (
           <S.RowBox
@@ -258,6 +281,23 @@ const LOL = ({ mastery, lotation, userLeagueInfo }) => {
           </Collapsible.Content>
         </Collapsible.Root>
       </S.RowBox>
+      <Margin H={resolution === "MOBILE" ? 10 : 20} />
+      {/* record */}
+      <Stack style={{ width: "100%", padding: 30 }}>
+        <Card.Root
+          size="lg"
+          style={{ opacity: 0.8, boxShadow: `0 4px 6px ${colors.BLACK}` }}
+        >
+          <Card.Header>
+            <Heading size="md"> Card - lg</Heading>
+          </Card.Header>
+          <Card.Body color="fg.muted">
+            This is the card body. Lorem ipsum dolor sit amet, consectetur
+            adipiscing elit.
+          </Card.Body>
+        </Card.Root>
+      </Stack>
+      {/* record */}
     </S.MainContainer>
   );
 };
