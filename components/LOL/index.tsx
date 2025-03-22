@@ -24,7 +24,16 @@ const LOL = ({ mastery, lotation, userLeagueInfo }) => {
   const resolution = useRecoilValue(atomResolution);
   const [backgroundURL, setBackgroundURL] = useRecoilState(atomBackgroundURL);
   const language = useRecoilValue(atomLanguage);
-  console.log(userLeagueInfo);
+  const MobileLotationFirstRow = [];
+  const MobileLotationSecondRow = [];
+
+  lotation.forEach((item, idx) => {
+    if (idx < Math.ceil(lotation.length / 2)) {
+      MobileLotationFirstRow.push(item);
+    } else {
+      MobileLotationSecondRow.push(item);
+    }
+  });
   useEffect(() => {
     if (mastery?.[0].championId ?? "") {
       setBackgroundURL(null);
@@ -160,19 +169,56 @@ const LOL = ({ mastery, lotation, userLeagueInfo }) => {
               borderWidth="1px"
               style={{ display: "flex", width: "auto" }}
             >
-              {lotation.map((item, idx) => {
-                return (
-                  <Image
-                    key={idx}
-                    src={item}
-                    alt="champion"
-                    width={30}
-                    height={30}
-                    quality={100}
-                    draggable={false}
-                  />
-                );
-              })}
+              {resolution === "MOBILE" ? (
+                <S.ColumnBox>
+                  <S.RowBox>
+                    {MobileLotationFirstRow.map((item, idx) => {
+                      return (
+                        <Image
+                          key={idx}
+                          src={item}
+                          alt="champion"
+                          width={30}
+                          height={30}
+                          quality={100}
+                          draggable={false}
+                        />
+                      );
+                    })}
+                  </S.RowBox>
+                  <S.RowBox>
+                    {MobileLotationSecondRow.map((item, idx) => {
+                      return (
+                        <Image
+                          key={idx}
+                          src={item}
+                          alt="champion"
+                          width={30}
+                          height={30}
+                          quality={100}
+                          draggable={false}
+                        />
+                      );
+                    })}
+                  </S.RowBox>
+                </S.ColumnBox>
+              ) : (
+                <S.RowBox>
+                  {lotation.map((item, idx) => {
+                    return (
+                      <Image
+                        key={idx}
+                        src={item}
+                        alt="champion"
+                        width={30}
+                        height={30}
+                        quality={100}
+                        draggable={false}
+                      />
+                    );
+                  })}
+                </S.RowBox>
+              )}
             </Box>
           </Collapsible.Content>
         </Collapsible.Root>
