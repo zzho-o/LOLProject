@@ -20,6 +20,19 @@ import { colors } from "@/config/globalColors";
 import Image from "next/image";
 import { TMatchRecord } from "@/utils/api/types";
 
+const inspectWin = (match: TMatchRecord, userPuuid: string) => {
+  const userInfo = match.participants.find(
+    (player) => player.puuid === userPuuid
+  );
+
+  if (!userInfo) return null;
+
+  const userTeamId = userInfo.teamId;
+
+  const userTeam = match.teams.find((team) => team.teamId === userTeamId);
+  return userTeam?.win || false; // team.win 값 반환 (기본값 false)
+};
+
 const LOL = ({
   mastery,
   lotation,
@@ -39,6 +52,18 @@ const LOL = ({
   const MobileLotationSecondRow = [];
   const mat = userMatchInfo[0];
   console.log(mat);
+
+  const cardVariants = {
+    hidden: { opacity: 0, x: 50 },
+    visible: (index: number) => ({
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.5,
+        delay: index * 0.1,
+      },
+    }),
+  };
 
   lotation.forEach((item, idx) => {
     if (idx < Math.ceil(lotation.length / 2)) {
@@ -286,26 +311,30 @@ const LOL = ({
       <Margin H={resolution === "MOBILE" ? 10 : 20} />
       {/* record */}
       <Stack style={{ width: "100%", padding: 30 }}>
-        {/* <Card.Root
-          size="lg"
-          style={{ opacity: 0.8, boxShadow: `0 4px 6px ${colors.BLACK}` }}
-        > */}
-        {userMatchInfo.map(() => {
+        {userMatchInfo.map((match, index) => {
+          const isWin = inspectWin(match, userInfo.puuid);
+          console.log(isWin);
+
           return (
-            <>
+            <motion.div
+              key={index}
+              initial="hidden"
+              animate="visible"
+              variants={cardVariants}
+              custom={index}
+            >
               <Card.Root
                 size="lg"
-                style={{ opacity: 0.8, boxShadow: `0 4px 6px ${colors.BLACK}` }}
+                style={{
+                  boxShadow: `0 4px 6px ${colors.BLACK}`,
+                  backgroundColor: isWin ? colors.VICTORY : colors.DEFEAT,
+                }}
               >
                 <Card.Header>
-                  <Heading size="md"> Card - sm</Heading>
+                  <Heading size="md">{"123123"}</Heading>
                 </Card.Header>
-                <Card.Body color="fg.muted">
-                  This is the card body. Lorem ipsum dolor sit amet, consectetur
-                  adipiscing elit.
-                </Card.Body>
               </Card.Root>
-            </>
+            </motion.div>
           );
         })}
       </Stack>

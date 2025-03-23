@@ -22,4 +22,7 @@ export const colors = {
   NAVY: "#000080",
   SKELETON: "#D9D9D9",
   CCC: "#CCCCCC",
+
+  VICTORY: "#0000FF4D",
+  DEFEAT: "#FF00004D",
 };
