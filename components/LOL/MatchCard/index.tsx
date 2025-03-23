@@ -1,7 +1,10 @@
 import { colors } from "@/config/globalColors";
+import { fetchSelectChampionImage } from "@/utils/api/api";
 import { TMatchRecord } from "@/utils/api/types";
 import { Card, Heading, Stack } from "@chakra-ui/react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+import CardChampionImg from "./CardChampionImg";
 const inspectWin = (match: TMatchRecord, userPuuid: string) => {
   const userInfo = match.participants.find(
     (player) => player.puuid === userPuuid
@@ -12,9 +15,20 @@ const inspectWin = (match: TMatchRecord, userPuuid: string) => {
   const userTeamId = userInfo.teamId;
 
   const userTeam = match.teams.find((team) => team.teamId === userTeamId);
-  return userTeam?.win || false; // team.win 값 반환 (기본값 false)
+  return userTeam?.win || false;
 };
-const MatchCard = ({ userMatchInfo, userInfo }) => {
+const myGameData = (match: TMatchRecord, userPuuid: string) => {
+  return match.participants.find(
+    (participant: any) => participant.puuid === userPuuid
+  );
+};
+const MatchCard = ({
+  userMatchInfo,
+  userInfo,
+}: {
+  userMatchInfo: TMatchRecord[];
+  userInfo: any;
+}) => {
   const cardVariants = {
     hidden: { opacity: 0, x: 50 },
     visible: (index: number) => ({
@@ -30,7 +44,10 @@ const MatchCard = ({ userMatchInfo, userInfo }) => {
     <Stack style={{ width: "100%", padding: 30 }}>
       {userMatchInfo.map((match, index) => {
         const isWin = inspectWin(match, userInfo.puuid);
-        console.log(isWin);
+        const myKdaData = myGameData(match, userInfo.puuid);
+        // const champImgUrl = await fetchSelectChampionImage(
+        //   String(myKdaData.championId)
+        // );
 
         return (
           <motion.div
@@ -47,6 +64,7 @@ const MatchCard = ({ userMatchInfo, userInfo }) => {
                 backgroundColor: isWin ? colors.VICTORY : colors.DEFEAT,
               }}
             >
+              <CardChampionImg id={myKdaData.championId} />
               <Card.Header>
                 <Heading size="md">{"123123"}</Heading>
               </Card.Header>
