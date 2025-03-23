@@ -1,7 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-// import * as S from "../components/HomeStyles";
 import styled from "@emotion/styled";
 import SearchButton from "@/components/common/SearchButton";
 import SearchInput from "@/components/common/SearchInput";
