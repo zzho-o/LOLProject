@@ -117,6 +117,7 @@ const LOL = ({
 
       <Margin H={resolution === "MOBILE" ? 10 : 20} />
       <LotationChampions lotation={lotation} />
+
       <Margin H={resolution === "MOBILE" ? 10 : 20} />
       <MatchCard userInfo={userInfo} userMatchInfo={userMatchInfo} />
     </S.MainContainer>

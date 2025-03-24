@@ -5,6 +5,12 @@ import { Card, Heading, Stack } from "@chakra-ui/react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import CardChampionImg from "./CardChampionImg";
+import * as S from "./styles";
+import { useRecoilValue } from "recoil";
+import { atomResolution } from "@/utils/recoil/atoms";
+import Margin from "@/components/common/Margin";
+import { useState } from "react";
+import MatchAllChamp from "./MatchAllChamp";
 const inspectWin = (match: TMatchRecord, userPuuid: string) => {
   const userInfo = match.participants.find(
     (player) => player.puuid === userPuuid
@@ -29,6 +35,8 @@ const MatchCard = ({
   userMatchInfo: TMatchRecord[];
   userInfo: any;
 }) => {
+  const resolution = useRecoilValue(atomResolution);
+
   const cardVariants = {
     hidden: { opacity: 0, x: 50 },
     visible: (index: number) => ({
@@ -41,13 +49,18 @@ const MatchCard = ({
     }),
   };
   return (
-    <Stack style={{ width: "100%", padding: 30 }}>
+    <Stack
+      style={{
+        width: "100%",
+        padding: 30,
+      }}
+    >
       {userMatchInfo.map((match, index) => {
         const isWin = inspectWin(match, userInfo.puuid);
         const myKdaData = myGameData(match, userInfo.puuid);
-        // const champImgUrl = await fetchSelectChampionImage(
-        //   String(myKdaData.championId)
-        // );
+        const [participantImgs, setParticipantImgs] = useState({});
+        const [team1Imgs, setTeam1Imgs] = useState([]);
+        const [team2Imgs, setTeam2Imgs] = useState([]);
 
         return (
           <motion.div
@@ -62,12 +75,29 @@ const MatchCard = ({
               style={{
                 boxShadow: `0 4px 6px ${colors.BLACK}`,
                 backgroundColor: isWin ? colors.VICTORY : colors.DEFEAT,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                padding: 20,
               }}
             >
               <CardChampionImg id={myKdaData.championId} />
-              <Card.Header>
-                <Heading size="md">{"123123"}</Heading>
-              </Card.Header>
+              <Margin W={resolution === "MOBILE" ? 20 : 30} />
+              <S.RowBox
+                style={{
+                  fontSize: resolution === "MOBILE" ? 15 : 30,
+                  color: "white",
+                  textShadow: "2px 2px 4px black",
+                }}
+              >
+                {myKdaData
+                  ? `${myKdaData.kills} / ${myKdaData.deaths} / ${myKdaData.assists}`
+                  : "N/A"}
+              </S.RowBox>
+              <S.ColumnBox>
+                <MatchAllChamp match={match} />
+              </S.ColumnBox>
+              <S.ColumnBox></S.ColumnBox>
             </Card.Root>
           </motion.div>
         );
