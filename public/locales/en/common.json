@@ -17,6 +17,7 @@
     "normal_draft": "Normal Game (Draft Pick)",
     "aram": "ARAM",
     "normal": "Normal Game",
+    "arena": "arena",
     "unknown": "??"
   }
 }

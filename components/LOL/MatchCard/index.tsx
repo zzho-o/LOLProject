@@ -51,6 +51,8 @@ const MatchCard = ({
         return language.gameType.aram;
       case 490:
         return language.gameType.normal;
+      case 1700:
+        return language.gameType.arena;
       default:
         return language.gameType.unknown;
     }
