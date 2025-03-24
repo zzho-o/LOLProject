@@ -9,5 +9,14 @@
   "record": "Record",
   "ranking": "Ranking",
   "logout": "Logout",
-  "ThisWeeksFreeChampions": "This Week's Free Champions"
+  "ThisWeeksFreeChampions": "This Week's Free Champions",
+  "gameType": {
+    "ranked_solo": "Ranked (Solo)",
+    "ranked_flex": "Ranked (Flex)",
+    "normal_blind": "Normal Game (Blind Pick)",
+    "normal_draft": "Normal Game (Draft Pick)",
+    "aram": "ARAM",
+    "normal": "Normal Game",
+    "unknown": "??"
+  }
 }

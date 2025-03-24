@@ -36,8 +36,6 @@ const MatchAllChamp = ({ match }) => {
       style={{
         display: "flex",
         flexDirection: "row-reverse",
-        backgroundColor: "#123123",
-        flex: 1,
       }}
     >
       <S.ColumnBox>

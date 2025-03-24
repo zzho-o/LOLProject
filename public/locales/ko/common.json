@@ -9,5 +9,14 @@
   "record": "전적",
   "ranking": "랭킹",
   "logout": "로그아웃",
-  "ThisWeeksFreeChampions": "이번주 무료 챔피언"
+  "ThisWeeksFreeChampions": "이번주 무료 챔피언",
+  "gameType": {
+    "ranked_solo": "랭크(개인)",
+    "ranked_flex": "랭크(자유)",
+    "normal_blind": "일반게임(블라인드)",
+    "normal_draft": "일반게임(드래프트)",
+    "aram": "칼바람나락",
+    "normal": "일반게임",
+    "unknown": "??"
+  }
 }
