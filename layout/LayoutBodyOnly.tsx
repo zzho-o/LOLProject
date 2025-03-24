@@ -38,7 +38,7 @@ const LayoutBodyOnly = ({ children }: ILayout) => {
             backgroundPosition: "center center",
             backgroundSize: "cover",
             backgroundAttachment: "fixed",
-            zIndex: 0,
+            zIndex: -1,
           }}
         />
         <div style={{ position: "relative", zIndex: 1 }}>{children}</div>
