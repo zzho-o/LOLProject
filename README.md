@@ -55,10 +55,15 @@ RIOT_API_KEY 값은 Riot Developer Portal => (https://developer.riotgames.com/)�
 - 프로필 커스터마이징: API를 활용한 맞춤형 프로필 설정 기능을 제공합니다.
 
 - 빠른 UI 렌더링: Recoil, Chakra UI, Framer Motion을 활용하여 최적화된 UI를 제공합니다.
+- 반응형 UI 지원:
+
+  - 데스크톱과 모바일 환경에 최적화
+
+  - 화면 크기에 따라 글자 크기, 배치, UI 요소가 동적으로 조정됨
 
 ## 기술 스택
 
-Frontend: Next.js, TypeScript, React
+Frontend: Next.js, TypeScript
 
 State Management: Recoil
 
