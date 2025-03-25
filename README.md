@@ -62,6 +62,12 @@ RIOT_API_KEY 값은 Riot Developer Portal => (https://developer.riotgames.com/)�
 
   - 화면 크기에 따라 글자 크기, 배치, UI 요소가 동적으로 조정됨
 
+- Localization 지원:
+
+  - 다국어 지원 (현재 영어와 한국어)
+
+  - 사용자의 언어 설정에 따라 동적으로 텍스트 번역
+
 ## 기술 스택
 
 Frontend: Next.js, TypeScript
