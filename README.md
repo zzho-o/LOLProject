@@ -7,7 +7,7 @@ LOLPROJECT는 리그 오브 레전드(LoL) 전적 검색 및 프로필 커스터
 ```
 LOLProject/
 ├── components/ # React 컴포넌트들을 포함하는 디렉터리
-│ ├── common/ # 공통 UI 컴포넌트 (버튼, 카드 등)
+│ ├── common/ # 공통 UI 컴포넌트 (버튼, 인풋 등)
 │ ├── profile/ # 프로필 관련 컴포넌트
 │ ├── match/ # 경기 기록 관련 컴포넌트
 │ └── ...
@@ -15,8 +15,6 @@ LOLProject/
 ├── layout/ # 레이아웃 관련 컴포넌트들을 포함하는 디렉터리 (예: 네비게이션, 페이지 구조)
 ├── pages/ # Next.js 페이지들을 포함하는 디렉터리 (각 URL과 매칭됨)
 │ ├── index.tsx # 홈 페이지
-│ ├── profile.tsx # 프로필 검색 페이지
-│ ├── match.tsx # 전적 페이지
 │ └── ...
 ├── public/ # 정적 파일 (이미지, 아이콘 등)
 ├── utils/ # 유틸리티 함수들을 포함하는 디렉터리 (API 호출, 데이터 처리 등)
@@ -44,7 +42,7 @@ RIOT_API_ACCOUNT_BASE_URL=https://americas.api.riotgames.com
 RIOT_API_SUMMONER_BASE_URL=https://KR.api.riotgames.com
 RIOT_API_ASIA=https://asia.api.riotgames.com
 TAG=KR1
-RIOT_API_KEY 값은 Riot Developer Portal => (https://developer.riotgames.com/)에서 발급받아야 합니다.
+RIOT_API_KEY 값은 Riot Developer Portal => (https://developer.riotgames.com/) 에서 발급받아야 합니다.
 
 ## 주요 기능
 
