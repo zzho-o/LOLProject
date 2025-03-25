@@ -4,6 +4,7 @@ LOLPROJECT는 리그 오브 레전드(LoL) 전적 검색 및 프로필 커스터
 
 ## 폴더 구조
 
+```
 LOLProject/
 ├── components/ # React 컴포넌트들을 포함하는 디렉터리
 │ ├── common/ # 공통 UI 컴포넌트 (버튼, 카드 등)
@@ -25,6 +26,7 @@ LOLProject/
 ├── package.json # 프로젝트 메타데이터 및 의존성 목록
 ├── tsconfig.json # TypeScript 설정 파일
 └── README.md # 프로젝트 설명 문서
+```
 
 ## 패키지 설치
 
