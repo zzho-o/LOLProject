@@ -72,7 +72,7 @@ const MatchCard = ({
   return (
     <Stack
       style={{
-        // width: "100%",
+        width: "100%",
         padding: 30,
       }}
     >
@@ -125,7 +125,7 @@ const MatchCard = ({
               </S.RowBox>
               <S.ColumnBox style={{ flexGrow: 1 }}>
                 <S.RowBox
-                // style={{ width: "100%", flexDirection: "row-reverse" }}
+                  style={{ width: "100%", flexDirection: "row-reverse" }}
                 >
                   <MatchAllChamp match={match} />
                 </S.RowBox>
