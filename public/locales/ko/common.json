@@ -10,6 +10,8 @@
   "ranking": "랭킹",
   "logout": "로그아웃",
   "ThisWeeksFreeChampions": "이번주 무료 챔피언",
+  "signUp": "회원가입",
+  "signIn": "로그인",
   "gameType": {
     "ranked_solo": "랭크(개인)",
     "ranked_flex": "랭크(자유)",

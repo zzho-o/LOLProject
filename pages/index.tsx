@@ -2,7 +2,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import styled from "@emotion/styled";
-import SearchButton from "@/components/common/SearchButton";
 import SearchInput from "@/components/common/SearchInput";
 import {
   fetchLotationChampions,
@@ -17,9 +16,10 @@ import {
   atomBackgroundURL,
   atomGameTap,
   atomLanguage,
+  atomLoggedInUser,
+  atomResolution,
   atomUserDetailInfo,
 } from "@/utils/recoil/atoms";
-import ProfileCard from "@/components/ProfileCard";
 import LayoutBodyOnly from "@/layout/LayoutBodyOnly";
 
 export type getNameTag = {
@@ -34,6 +34,8 @@ import { toaster } from "@/components/ui/toaster";
 import LOL from "@/components/LOL";
 import TFT from "@/components/TFT";
 import { dataAttr } from "node_modules/@chakra-ui/react/dist/types/utils";
+import SignIn from "./SignIn";
+import Margin from "@/components/common/Margin";
 
 export const getServerSideProps = async (context: any) => {
   const { locale, query } = context;
@@ -98,8 +100,10 @@ const Home = ({
   const [userInfo, setUserInfo] = useRecoilState(atomUserDetailInfo);
   const [language, setLanguage] = useRecoilState(atomLanguage);
   const [backgroundURL, setBackgroundURL] = useRecoilState(atomBackgroundURL);
+  const [loggedInUser, setLoggedInUser] = useRecoilState(atomLoggedInUser);
   const game = useRecoilValue(atomGameTap);
   const [lotationUrl, setLotationUrl] = useState([]);
+  const resolution = useRecoilValue(atomResolution);
 
   const handleSearch = () => {
     if (summonerName.trim()) {
@@ -131,6 +135,29 @@ const Home = ({
 
   return (
     <>
+      {!loggedInUser ? (
+        <>
+          <Margin H={resolution === "PC" ? 70 : 50} />
+          <SignIn />
+        </>
+      ) : (
+        <LayoutBodyOnly>
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+          >
+            <SearchInput
+              summonerName={summonerName}
+              setSummonerName={setSummonerName}
+              handleSearch={handleSearch}
+              error={error}
+            />
+          </motion.div>
+        </LayoutBodyOnly>
+      )}
+      {/* 보류 
       {!userInfo ? (
         <LayoutBodyOnly>
           <motion.div
@@ -160,7 +187,7 @@ const Home = ({
             <TFT />
           )}
         </MainContainer>
-      )}
+      )} */}
     </>
   );
 };
