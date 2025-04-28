@@ -7,10 +7,11 @@ import Image from "next/image";
 import CardChampionImg from "./CardChampionImg";
 import * as S from "./styles";
 import { useRecoilValue } from "recoil";
-import { atomLanguage, atomResolution } from "@/utils/recoil/atoms";
+import { atomResolution } from "@/utils/recoil/atoms";
 import Margin from "@/components/common/Margin";
 import { useState } from "react";
 import MatchAllChamp from "./MatchAllChamp";
+import { useTranslation } from "next-i18next";
 const inspectWin = (match: TMatchRecord, userPuuid: string) => {
   const userInfo = match.participants.find(
     (player) => player.puuid === userPuuid
@@ -36,25 +37,25 @@ const MatchCard = ({
   userInfo: any;
 }) => {
   const resolution = useRecoilValue(atomResolution);
-  const language = useRecoilValue(atomLanguage);
+  const { t, i18n } = useTranslation(["common"]);
   const getGameType = (queueId: number) => {
     switch (queueId) {
       case 420:
-        return language.gameType.ranked_solo;
+        return t("gameType.ranked_solo");
       case 440:
-        return language.gameType.ranked_flex;
+        return t("gameType.ranked_flex");
       case 400:
-        return language.gameType.normal_blind;
+        return t("gameType.normal_blind");
       case 430:
-        return language.gameType.normal_draft;
+        return t("gameType.normal_draft");
       case 450:
-        return language.gameType.aram;
+        return t("gameType.aram");
       case 490:
-        return language.gameType.normal;
+        return t("gameType.normal");
       case 1700:
-        return language.gameType.arena;
+        return t("gameType.arena");
       default:
-        return language.gameType.unknown;
+        return t("gameType.unknown");
     }
   };
 

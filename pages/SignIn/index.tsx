@@ -1,17 +1,41 @@
 import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import * as S from "./styles";
-import { atomLanguage, atomResolution } from "@/utils/recoil/atoms";
+import { atomLoading, atomResolution } from "@/utils/recoil/atoms";
 import Margin from "@/components/common/Margin";
+import { supabase } from "@/utils/supabase/supabaseClient";
+import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 
 const SignIn = () => {
   const resolution = useRecoilValue(atomResolution);
-  const [language, setLanguage] = useRecoilState(atomLanguage);
+  const [loading, setLoading] = useRecoilState(atomLoading);
+  const router = useRouter();
+  const { t, i18n } = useTranslation(["common"]);
+
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
-  const handleEnterKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      console.log(123);
+
+  const handleSignIn = async () => {
+    setLoading(true);
+
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: id,
+        password: pw,
+      });
+
+      if (error) {
+        console.error("Login failed:", error.message);
+        alert("Failed to sign in. Please try again.");
+      } else {
+        console.log("Login successful", data);
+        alert("Successfully signed in!");
+      }
+    } catch (err) {
+      console.error("An unexpected error occurred:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -28,19 +52,16 @@ const SignIn = () => {
             <S.PwLabel>{"PW"}</S.PwLabel>
             <S.StyledPwInput
               type="password"
-              onKeyDown={handleEnterKeyDown}
               value={pw}
               onChange={(e) => setPw(e.target.value)}
             />
           </S.RowBox>
           <Margin H={20} />
-          <S.SignInButton resolution={resolution}>
-            {language.signIn}
+          <S.SignInButton resolution={resolution} onClick={handleSignIn}>
+            {t("signIn")}
           </S.SignInButton>
           <Margin H={20} />
-          <S.SignUpButton resolution={resolution}>
-            {language.signUp}
-          </S.SignUpButton>
+          <S.SignUpButton resolution={resolution}>{t("signUp")}</S.SignUpButton>
         </S.PCMainContainer>
       ) : (
         <S.MobileMainContainer>
@@ -53,19 +74,16 @@ const SignIn = () => {
             <S.PwLabel>{"PW"}</S.PwLabel>
             <S.StyledPwInput
               type="password"
-              onKeyDown={handleEnterKeyDown}
               value={pw}
               onChange={(e) => setPw(e.target.value)}
             />
           </S.RowBox>
           <Margin H={20} />
-          <S.SignInButton resolution={resolution}>
-            {language.signIn}
+          <S.SignInButton resolution={resolution} onClick={handleSignIn}>
+            {t("signIn")}
           </S.SignInButton>
           <Margin H={20} />
-          <S.SignUpButton resolution={resolution}>
-            {language.signUp}
-          </S.SignUpButton>
+          <S.SignUpButton resolution={resolution}>{t("signUp")}</S.SignUpButton>
         </S.MobileMainContainer>
       )}
     </>

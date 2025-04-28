@@ -4,7 +4,6 @@ import * as S from "./styles";
 import { colors } from "@/config/globalColors";
 import {
   atomGameTap,
-  atomLanguage,
   atomResolution,
   atomUserDetailInfo,
 } from "@/utils/recoil/atoms";
@@ -33,19 +32,10 @@ const Header = () => {
   const resolution = useRecoilValue(atomResolution);
   const [labelLanguage, setLabelLanguage] = useState("한국어");
   const [lang, setLang] = useState("ko");
-  const [language, setLanguage] = useRecoilState(atomLanguage);
-  const { t, i18n } = useTranslation("common");
+  const { t, i18n } = useTranslation(["common"]);
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [game, setGame] = useRecoilState(atomGameTap);
-
-  const languageData = {
-    ko: koData,
-    en: enData,
-  };
-  useEffect(() => {
-    setLanguage(languageData[i18n.language] || {});
-  }, [i18n.language]);
 
   type GameType = "LOL" | "TFT";
 
@@ -60,13 +50,10 @@ const Header = () => {
     ],
   });
   useEffect(() => {
-    console.log("Current Language:", i18n.language);
-  }, [i18n.language]);
-  useEffect(() => {
     if (lang !== i18n.language) {
-      i18n.changeLanguage(lang);
+      i18n.changeLanguage(lang === "ko" ? "ko" : "en");
     }
-  }, [lang]);
+  }, [lang, i18n]);
 
   return (
     <S.HeaderContainer>
@@ -105,7 +92,7 @@ const Header = () => {
             router.push("/");
           }}
         >
-          <S.TabButton isActive={false}>{language.title}</S.TabButton>
+          <S.TabButton isActive={false}>{t("title")}</S.TabButton>
         </S.TitleContainer>
       )}
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -116,7 +103,7 @@ const Header = () => {
               router.push("/");
             }}
           >
-            {language.logout}
+            {t("logout")}
           </S.TabButton>
         )}
 
@@ -140,7 +127,7 @@ const Header = () => {
                 <Drawer.Positioner>
                   <Drawer.Content>
                     <Drawer.Header>
-                      <Drawer.Title>{language.language}</Drawer.Title>
+                      <Drawer.Title>{t("language")}</Drawer.Title>
                     </Drawer.Header>
                     <Drawer.Body>
                       <SelectRoot

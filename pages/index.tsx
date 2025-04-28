@@ -15,7 +15,6 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import {
   atomBackgroundURL,
   atomGameTap,
-  atomLanguage,
   atomLoggedInUser,
   atomResolution,
   atomUserDetailInfo,
@@ -98,12 +97,12 @@ const Home = ({
   const [summonerName, setSummonerName] = useState("");
   const router = useRouter();
   const [userInfo, setUserInfo] = useRecoilState(atomUserDetailInfo);
-  const [language, setLanguage] = useRecoilState(atomLanguage);
   const [backgroundURL, setBackgroundURL] = useRecoilState(atomBackgroundURL);
   const [loggedInUser, setLoggedInUser] = useRecoilState(atomLoggedInUser);
   const game = useRecoilValue(atomGameTap);
   const [lotationUrl, setLotationUrl] = useState([]);
   const resolution = useRecoilValue(atomResolution);
+  const { t, i18n } = useTranslation(["common"]);
 
   const handleSearch = () => {
     if (summonerName.trim()) {
@@ -127,7 +126,7 @@ const Home = ({
     toaster.dismiss();
     if (userInfo) {
       toaster.create({
-        description: language.enjoyit,
+        description: t("enjoyit"),
         type: "success",
       });
     }

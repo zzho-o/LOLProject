@@ -35,3 +35,8 @@ export const atomLoggedInUser = atom<any>({
   key: "atomBackgroundURL",
   default: null,
 });
+
+export const atomLoading = atom<boolean>({
+  key: "atomLoading",
+  default: false,
+});

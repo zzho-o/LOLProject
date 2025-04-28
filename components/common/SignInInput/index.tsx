@@ -53,7 +53,7 @@ const SignInInput = ({
       setState("error");
       toaster.dismiss();
       toaster.create({
-        description: language.nomatchingnicknamefound,
+        description: t("nomatchingnicknamefound"),
         type: "error",
       });
       router.push("/");
@@ -70,7 +70,7 @@ const SignInInput = ({
           <S.BodyContainer>
             <S.StyledInput
               type="text"
-              placeholder={language.betanotice}
+              placeholder={t("betanotice")}
               value={summonerName}
               onChange={(e) => setSummonerName(e.target.value)}
               onKeyDown={handleEnterKeyDown}
@@ -97,7 +97,7 @@ const SignInInput = ({
               >
                 <SearchButton
                   searchButton
-                  title={language.start}
+                  title={t("start")}
                   handleSearch={() => {
                     setState("pending");
                     toaster.dismiss();
@@ -118,7 +118,7 @@ const SignInInput = ({
           <S.RowBox style={{ width: "70%" }}>
             <S.MobileStyledInput
               type="text"
-              placeholder={language.betanotice}
+              placeholder={t("betanotice")}
               value={summonerName}
               onChange={(e) => setSummonerName(e.target.value)}
               onKeyDown={handleEnterKeyDown}
@@ -149,7 +149,7 @@ const SignInInput = ({
             <S.RowBox style={{ width: "100%", justifyContent: "center" }}>
               <SearchButton
                 searchButton
-                title={language.start}
+                title={t("start")}
                 handleSearch={() => {
                   setState("pending");
                   toaster.dismiss();

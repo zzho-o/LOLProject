@@ -6,11 +6,7 @@ import { motion } from "framer-motion";
 import Margin from "../Margin";
 import { useTranslation } from "next-i18next";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  atomLanguage,
-  atomResolution,
-  atomUserDetailInfo,
-} from "@/utils/recoil/atoms";
+import { atomResolution, atomUserDetailInfo } from "@/utils/recoil/atoms";
 import { Button } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import { useRouter } from "next/router";
@@ -29,7 +25,6 @@ const SearchInput = ({
   error,
 }: SearchButtonProps) => {
   const { t, i18n } = useTranslation("common");
-  const [language, setLanguage] = useRecoilState(atomLanguage);
   const resolution = useRecoilValue(atomResolution);
   const userInfo = useRecoilValue(atomUserDetailInfo);
   const [state, setState] = useState<"stop" | "pending" | "error" | "clear">(
@@ -53,7 +48,7 @@ const SearchInput = ({
       setState("error");
       toaster.dismiss();
       toaster.create({
-        description: language.nomatchingnicknamefound,
+        description: t("nomatchingnicknamefound"),
         type: "error",
       });
       router.push("/");
@@ -70,7 +65,7 @@ const SearchInput = ({
           <S.BodyContainer>
             <S.StyledInput
               type="text"
-              placeholder={language.betanotice}
+              placeholder={t("betanotice")}
               value={summonerName}
               onChange={(e) => setSummonerName(e.target.value)}
               onKeyDown={handleEnterKeyDown}
@@ -97,7 +92,7 @@ const SearchInput = ({
               >
                 <SearchButton
                   searchButton
-                  title={language.start}
+                  title={t("start")}
                   handleSearch={() => {
                     setState("pending");
                     toaster.dismiss();
@@ -118,7 +113,7 @@ const SearchInput = ({
           <S.RowBox style={{ width: "70%" }}>
             <S.MobileStyledInput
               type="text"
-              placeholder={language.betanotice}
+              placeholder={t("betanotice")}
               value={summonerName}
               onChange={(e) => setSummonerName(e.target.value)}
               onKeyDown={handleEnterKeyDown}
@@ -149,7 +144,7 @@ const SearchInput = ({
             <S.RowBox style={{ width: "100%", justifyContent: "center" }}>
               <SearchButton
                 searchButton
-                title={language.start}
+                title={t("start")}
                 handleSearch={() => {
                   setState("pending");
                   toaster.dismiss();
