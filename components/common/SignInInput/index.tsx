@@ -6,11 +6,7 @@ import { motion } from "framer-motion";
 import Margin from "../Margin";
 import { useTranslation } from "next-i18next";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  atomLanguage,
-  atomResolution,
-  atomUserDetailInfo,
-} from "@/utils/recoil/atoms";
+import { atomResolution, atomUserDetailInfo } from "@/utils/recoil/atoms";
 import { Button } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import { useRouter } from "next/router";
@@ -29,7 +25,6 @@ const SignInInput = ({
   error,
 }: SearchButtonProps) => {
   const { t, i18n } = useTranslation("common");
-  const [language, setLanguage] = useRecoilState(atomLanguage);
   const resolution = useRecoilValue(atomResolution);
   const userInfo = useRecoilValue(atomUserDetailInfo);
   const [state, setState] = useState<"stop" | "pending" | "error" | "clear">(
