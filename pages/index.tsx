@@ -156,7 +156,7 @@ const Home = ({
           </motion.div>
         </LayoutBodyOnly>
       )}
-      {/* 보류 
+      {/* 보류중
       {!userInfo ? (
         <LayoutBodyOnly>
           <motion.div
