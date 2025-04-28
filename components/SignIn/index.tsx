@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import * as S from "../../components/pageStyles/SignIn/styles";
+import * as S from "./styles";
 import { atomLoading, atomResolution } from "@/utils/recoil/atoms";
 import Margin from "@/components/common/Margin";
 import { supabase } from "@/utils/supabase/supabaseClient";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { Image } from "@chakra-ui/react";
 
 const SignIn = () => {
   const resolution = useRecoilValue(atomResolution);
   const [loading, setLoading] = useRecoilState(atomLoading);
   const router = useRouter();
   const { t, i18n } = useTranslation(["common"]);
-
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
 
@@ -38,6 +38,9 @@ const SignIn = () => {
       setLoading(false);
     }
   };
+  const handleSignUp = () => {
+    router.push("/SignUp");
+  };
 
   return (
     <>
@@ -61,7 +64,41 @@ const SignIn = () => {
             {t("signIn")}
           </S.SignInButton>
           <Margin H={20} />
-          <S.SignUpButton resolution={resolution}>{t("signUp")}</S.SignUpButton>
+          <S.RowBox>
+            <Image
+              src="/assets/kakao.png"
+              alt="Image"
+              boxSize="10"
+              objectFit="cover"
+              borderRadius="md"
+              boxShadow="md"
+              _hover={{ boxShadow: "xl" }}
+            />
+            <Margin W={5} />
+            <Image
+              src="/assets/google.png"
+              alt="Image"
+              boxSize="10"
+              objectFit="cover"
+              borderRadius="md"
+              boxShadow="md"
+              _hover={{ boxShadow: "xl" }}
+            />
+            <Margin W={5} />
+            <Image
+              src="/assets/naver.png"
+              alt="Image"
+              boxSize="10"
+              objectFit="cover"
+              borderRadius="md"
+              boxShadow="md"
+              _hover={{ boxShadow: "xl" }}
+            />
+          </S.RowBox>
+          <Margin H={20} />
+          <S.SignUpButton resolution={resolution} onClick={handleSignUp}>
+            {t("signUp")}
+          </S.SignUpButton>
         </S.PCMainContainer>
       ) : (
         <S.MobileMainContainer>
@@ -83,7 +120,41 @@ const SignIn = () => {
             {t("signIn")}
           </S.SignInButton>
           <Margin H={20} />
-          <S.SignUpButton resolution={resolution}>{t("signUp")}</S.SignUpButton>
+          <S.RowBox>
+            <Image
+              src="/assets/kakao.png"
+              alt="Image"
+              boxSize="10"
+              objectFit="cover"
+              borderRadius="md"
+              boxShadow="md"
+              _hover={{ boxShadow: "xl" }}
+            />
+            <Margin W={5} />
+            <Image
+              src="/assets/google.png"
+              alt="Image"
+              boxSize="10"
+              objectFit="cover"
+              borderRadius="md"
+              boxShadow="md"
+              _hover={{ boxShadow: "xl" }}
+            />
+            <Margin W={5} />
+            <Image
+              src="/assets/naver.png"
+              alt="Image"
+              boxSize="10"
+              objectFit="cover"
+              borderRadius="md"
+              boxShadow="md"
+              _hover={{ boxShadow: "xl" }}
+            />
+          </S.RowBox>
+          <Margin H={20} />
+          <S.SignUpButton resolution={resolution} onClick={handleSignUp}>
+            {t("signUp")}
+          </S.SignUpButton>
         </S.MobileMainContainer>
       )}
     </>

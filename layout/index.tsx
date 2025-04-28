@@ -1,6 +1,7 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { atomBackgroundURL } from "@/utils/recoil/atoms";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { ReactNode } from "react";
 import { useRecoilValue } from "recoil";
 

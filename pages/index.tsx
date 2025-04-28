@@ -33,7 +33,7 @@ import { toaster } from "@/components/ui/toaster";
 import LOL from "@/components/LOL";
 import TFT from "@/components/TFT";
 import { dataAttr } from "node_modules/@chakra-ui/react/dist/types/utils";
-import SignIn from "./SignIn";
+import SignIn from "../components/SignIn";
 import Margin from "@/components/common/Margin";
 
 export const getServerSideProps = async (context: any) => {

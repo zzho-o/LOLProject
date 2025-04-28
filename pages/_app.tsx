@@ -1,12 +1,12 @@
 import { RecoilRoot, useRecoilState, useSetRecoilState } from "recoil";
 import type { AppProps } from "next/app";
-import { ReactElement, ReactNode, useEffect, createContext } from "react";
+import { ReactElement, ReactNode, useEffect } from "react";
 import Layout from "layout";
 import { NextPage } from "next";
 import { atomResolution, atomWindow } from "@/utils/recoil/atoms";
 import { Provider } from "@/components/ui/provider";
 import { appWithTranslation } from "next-i18next";
-import { Toaster} from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -19,6 +19,7 @@ type AppPropsWithLayout = AppProps & {
 const App = ({ children }: { children: ReactNode }) => {
   const [resolution, setResolution] = useRecoilState(atomResolution);
   const setWindow = useSetRecoilState(atomWindow);
+
   useEffect(() => {
     const handleWindowResize = () => {
       const width = window.innerWidth;
@@ -34,37 +35,12 @@ const App = ({ children }: { children: ReactNode }) => {
         innerHeight: window.innerHeight,
       });
     };
+
     handleWindowResize();
     window.addEventListener("resize", handleWindowResize);
+
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
-
-  useEffect(() => {
-    setWindow({
-      innerWidth: window.innerWidth,
-      innerHeight: window.innerHeight,
-    });
-  }, [resolution]);
-
-  useEffect(() => {
-    const handleWindowResize = () => {
-      const width = window.innerWidth;
-      if (width > 990) {
-        setResolution("PC");
-      } else if (width > 768) {
-        setResolution("TABLET");
-      } else {
-        setResolution("MOBILE");
-      }
-      setWindow({
-        innerWidth: window.innerWidth,
-        innerHeight: window.innerHeight,
-      });
-    };
-    handleWindowResize();
-    window.addEventListener("resize", handleWindowResize);
-    return () => window.removeEventListener("resize", handleWindowResize);
-  }, [resolution]);
 
   return <>{children}</>;
 };
