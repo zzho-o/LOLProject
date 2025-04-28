@@ -49,11 +49,6 @@ const Header = () => {
       { label: "English", value: "en" },
     ],
   });
-  useEffect(() => {
-    if (lang !== i18n.language) {
-      i18n.changeLanguage(lang === "ko" ? "ko" : "en");
-    }
-  }, [lang, i18n]);
 
   return (
     <S.HeaderContainer>
@@ -159,6 +154,7 @@ const Header = () => {
                               onClick={() => {
                                 setLabelLanguage(lang.label);
                                 setLang(lang.value);
+                                i18n.changeLanguage(lang.value);
                               }}
                             >
                               {lang.label}
@@ -188,6 +184,7 @@ const Header = () => {
                   onClick={() => {
                     setLabelLanguage(lang.label);
                     setLang(lang.value);
+                    i18n.changeLanguage(lang.value);
                   }}
                 >
                   {lang.label}
