@@ -4,7 +4,6 @@ import ProfileCard from "../ProfileCard";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   atomBackgroundURL,
-  atomLanguage,
   atomResolution,
   atomUserDetailInfo,
 } from "@/utils/recoil/atoms";
