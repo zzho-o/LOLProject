@@ -27,7 +27,7 @@ export const atomBackgroundURL = atom<string>({
 });
 
 export const atomLoggedInUser = atom<any>({
-  key: "atomBackgroundURL",
+  key: "atomLoggedInUser",
   default: null,
 });
 
