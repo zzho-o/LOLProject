@@ -3,14 +3,15 @@ import * as S from "./styles";
 import { Box, Collapsible } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRecoilValue } from "recoil";
-import { atomLanguage, atomResolution } from "@/utils/recoil/atoms";
+import { atomResolution } from "@/utils/recoil/atoms";
 import { colors } from "@/config/globalColors";
+import { useTranslation } from "next-i18next";
 
 const LotationChampions = ({ lotation }) => {
   const resolution = useRecoilValue(atomResolution);
-  const language = useRecoilValue(atomLanguage);
   const MobileLotationFirstRow = [];
   const MobileLotationSecondRow = [];
+  const { t, i18n } = useTranslation(["common"]);
 
   lotation.forEach((item, idx) => {
     if (idx < Math.ceil(lotation.length / 2)) {
@@ -38,7 +39,7 @@ const LotationChampions = ({ lotation }) => {
             boxShadow: "2px 2px 4px black",
           }}
         >
-          {language.ThisWeeksFreeChampions}
+          {t("ThisWeeksFreeChampions")}
         </Collapsible.Trigger>
         <Collapsible.Content>
           <Box
