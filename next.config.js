@@ -1,9 +1,5 @@
-const { i18n } = require("./next-i18next.config");
+const nextI18NextConfig = require("./next-i18next.config");
 
 module.exports = {
-  reactStrictMode: true,
-  i18n,
-  images: {
-    domains: ["ddragon.leagueoflegends.com"],
-  },
+  ...nextI18NextConfig,
 };
