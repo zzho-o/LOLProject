@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import styled from "@emotion/styled";
+
 import SearchInput from "@/components/common/SearchInput";
 import {
   fetchLotationChampions,
@@ -192,31 +192,3 @@ const Home = ({
 };
 
 export default Home;
-export const MainContainer = styled.div({
-  display: "flex",
-  flex: 1,
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "flex-start",
-  width: "100%",
-});
-
-export const ContentsLeftContainer = styled.div({
-  display: "flex",
-  flex: 1,
-  flexDirection: "column",
-  alignItems: "center",
-});
-
-export const ContentsRightContainer = styled.div({
-  display: "flex",
-  flexDirection: "column",
-  height: "100%",
-  maxWidth: 240,
-});
-
-export const InputContainer = styled.div({
-  display: "flex",
-  flexDirection: "column",
-  width: "100%",
-});

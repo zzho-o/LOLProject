@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import * as S from "./styles";
+import * as S from "../../components/pageStyles/SignIn/styles";
 import { atomLoading, atomResolution } from "@/utils/recoil/atoms";
 import Margin from "@/components/common/Margin";
 import { supabase } from "@/utils/supabase/supabaseClient";
