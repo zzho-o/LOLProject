@@ -7,6 +7,11 @@ import { supabase } from "@/utils/supabase/supabaseClient";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { Image } from "@chakra-ui/react";
+import Link from "next/link";
+
+const KAKAO_CLIENT_ID = "ecb8c1ddaa0bdc9f14504b3e7b60b5db";
+const KAKAO_REDIRECT_URI = "http://localhost:3000/oauth/kakao/redirect";
+const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`;
 
 const SignIn = () => {
   const resolution = useRecoilValue(atomResolution);
@@ -65,15 +70,17 @@ const SignIn = () => {
           </S.SignInButton>
           <Margin H={20} />
           <S.RowBox>
-            <Image
-              src="/assets/kakao.png"
-              alt="Image"
-              boxSize="10"
-              objectFit="cover"
-              borderRadius="md"
-              boxShadow="md"
-              _hover={{ boxShadow: "xl" }}
-            />
+            <Link href={kakaoLoginUrl}>
+              <Image
+                src="/assets/kakao.png"
+                alt="Image"
+                boxSize="10"
+                objectFit="cover"
+                borderRadius="md"
+                boxShadow="md"
+                _hover={{ boxShadow: "xl" }}
+              />
+            </Link>
             <Margin W={5} />
             <Image
               src="/assets/google.png"
@@ -121,15 +128,17 @@ const SignIn = () => {
           </S.SignInButton>
           <Margin H={20} />
           <S.RowBox>
-            <Image
-              src="/assets/kakao.png"
-              alt="Image"
-              boxSize="10"
-              objectFit="cover"
-              borderRadius="md"
-              boxShadow="md"
-              _hover={{ boxShadow: "xl" }}
-            />
+            <Link href={kakaoLoginUrl}>
+              <Image
+                src="/assets/kakao.png"
+                alt="Image"
+                boxSize="10"
+                objectFit="cover"
+                borderRadius="md"
+                boxShadow="md"
+                _hover={{ boxShadow: "xl" }}
+              />
+            </Link>
             <Margin W={5} />
             <Image
               src="/assets/google.png"

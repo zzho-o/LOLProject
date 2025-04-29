@@ -29,7 +29,7 @@ const SignUp = () => {
       </S.RowBox>
       <Margin H={resolution === "PC" ? 50 : 30} />
       <S.RowBox>
-        <S.IdLabel>123</S.IdLabel>
+        <S.IdLabel>{""}</S.IdLabel>
         <S.StyledInput />
       </S.RowBox>
       <Margin H={resolution === "PC" ? 50 : 30} />
