@@ -1,15 +1,20 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { supabase } from "@/utils/supabase/supabaseClient";
 import axios from "axios";
+import { useSetRecoilState } from "recoil";
+import { atomLoading } from "@/utils/recoil/atoms";
 
 const KakaoRedirect = () => {
   const router = useRouter();
+  const setLoading = useSetRecoilState(atomLoading);
   const redirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
+
   useEffect(() => {
     const processKakaoLogin = async () => {
       const code = router.query.code as string;
       if (!code) return;
+
+      setLoading(true);
 
       try {
         const tokenRes = await axios.post(
@@ -35,59 +40,30 @@ const KakaoRedirect = () => {
           },
         });
 
-        const email = userRes.data?.kakao_account.email;
-        const nickname = userRes.data?.kakao_account.profile.nickname;
         const kakaoId = userRes.data?.id;
+        const email = userRes.data?.kakao_account?.email ?? "";
 
-        const { data: user } = await supabase
-          .from("users")
-          .select("id")
-          .eq("email", email)
-          .single();
-
-        if (!user) {
-          const { error: signUpError } = await supabase.auth.signUp({
-            email: email,
-            password: kakaoId.toString(),
-          });
-
-          if (signUpError) {
-            console.error("Sign-up failed:", signUpError.message);
-            return;
-          }
-
-          await supabase.from("users").insert([
-            {
-              email,
-              nickname,
-              provider: "kakao",
-            },
-          ]);
-        }
-
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email: email,
-          password: kakaoId.toString(),
+        router.push({
+          pathname: "/SignUp/ExtraInfo",
+          query: {
+            provider: "kakao",
+            kakaoId: kakaoId,
+            email,
+          },
         });
-
-        if (signInError) {
-          console.error("Sign-in failed:", signInError.message);
-          return;
-        }
-
-        console.log("Login successful");
-        router.push("/");
       } catch (err) {
         console.error("OAuth process failed:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
     if (router.isReady) {
       processKakaoLogin();
     }
-  }, [router]);
+  }, [router, setLoading]);
 
-  return <div>Logging in...</div>;
+  return <></>;
 };
 
 export default KakaoRedirect;

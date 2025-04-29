@@ -13,6 +13,7 @@
   "ThisWeeksFreeChampions": "This Week's Free Champions",
   "signUp": "Sign Up",
   "signIn": "Sign In",
+  "loading": "Please wait!",
   "gameType": {
     "ranked_solo": "Ranked (Solo)",
     "ranked_flex": "Ranked (Flex)",

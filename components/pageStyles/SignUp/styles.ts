@@ -67,7 +67,20 @@ export const MobileMainContainer = styled.div({
   alignItems: "center",
   width: "100%",
 });
-
+export const StyledButton = styled.button<{ resolution: string }>(
+  ({ resolution }) => ({
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.GRAY_900,
+    borderRadius: 100,
+    color: colors.WHITE,
+    width: "30%",
+    padding: 10,
+    cursor: "pointer",
+    fontSize: resolution === "PC" ? 14 : 12,
+  })
+);
 export const RowBox = styled.div({
   display: "flex",
   alignItems: "center",
