@@ -27,7 +27,7 @@ const KakaoRedirect = () => {
           }
         );
 
-        const accessToken = tokenRes.data.access_token;
+        const accessToken = tokenRes?.data?.access_token;
 
         const userRes = await axios.get("https://kapi.kakao.com/v2/user/me", {
           headers: {
@@ -35,9 +35,9 @@ const KakaoRedirect = () => {
           },
         });
 
-        const email = userRes.data.kakao_account.email;
-        const nickname = userRes.data.kakao_account.profile.nickname;
-        const kakaoId = userRes.data.id;
+        const email = userRes.data?.kakao_account.email;
+        const nickname = userRes.data?.kakao_account.profile.nickname;
+        const kakaoId = userRes.data?.id;
 
         const { data: user } = await supabase
           .from("users")
