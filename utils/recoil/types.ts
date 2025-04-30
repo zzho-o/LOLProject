@@ -10,3 +10,11 @@ export type TUserDetailInfo = {
   gameName: string;
   tagLine: string;
 };
+
+export type ToastType = "success" | "error";
+
+export type ToastState = {
+  isOpen: boolean;
+  message: string;
+  type: ToastType;
+};

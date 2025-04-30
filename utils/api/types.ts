@@ -47,3 +47,13 @@ export type Participant = {
   goldEarned: number;
   totalMinionsKilled: number;
 };
+
+export type SignUpPayload = {
+  email: string;
+  password: string;
+  nickname: string;
+  gender: "male" | "female" | null;
+  birth: string | null;
+  hide_gender: boolean;
+  hide_birth: boolean;
+};

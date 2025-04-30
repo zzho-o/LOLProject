@@ -42,15 +42,16 @@ const KakaoRedirect = () => {
 
         const kakaoId = userRes.data?.id;
         const email = userRes.data?.kakao_account?.email ?? "";
+        const locale = "ko";
 
-        router.push({
-          pathname: "/SignUp/ExtraInfo",
-          query: {
-            provider: "kakao",
-            kakaoId: kakaoId,
-            email,
+        router.push(
+          {
+            pathname: "/SignUp/ExtraInfo",
+            query: { provider: "kakao", kakaoId, email },
           },
-        });
+          `/${locale}/SignUp/ExtraInfo?provider=kakao&kakaoId=${kakaoId}&email=${email}`,
+          { locale }
+        );
       } catch (err) {
         console.error("OAuth process failed:", err);
       } finally {

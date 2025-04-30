@@ -31,6 +31,7 @@ export const StyledInput = styled.input({
     borderColor: colors.GRAY_500,
   },
 });
+
 export const MobileStyledInput = styled.input({
   padding: 10,
   fontSize: 12,
@@ -67,15 +68,31 @@ export const MobileMainContainer = styled.div({
   alignItems: "center",
   width: "100%",
 });
-export const StyledButton = styled.button<{ resolution: string }>(
+export const StyledButton = styled.button<{
+  resolution: string;
+  disabled: boolean;
+}>(({ resolution, disabled }) => ({
+  disabled: disabled,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundColor: colors.GRAY_900,
+  borderRadius: 100,
+  color: colors.WHITE,
+  width: "30%",
+  padding: 10,
+  cursor: disabled ? "" : "pointer",
+  fontSize: resolution === "PC" ? 14 : 12,
+}));
+export const InspectNickName = styled.button<{ resolution: string }>(
   ({ resolution }) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colors.GRAY_900,
+    backgroundColor: colors.WARNING,
     borderRadius: 100,
     color: colors.WHITE,
-    width: "30%",
+    width: "20%",
     padding: 10,
     cursor: "pointer",
     fontSize: resolution === "PC" ? 14 : 12,

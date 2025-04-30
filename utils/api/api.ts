@@ -1,6 +1,7 @@
 import axios from "axios";
-import { TMatchRecord } from "./types";
+import { SignUpPayload, TMatchRecord } from "./types";
 import pLimit from "p-limit";
+import { supabase } from "libs/supabase";
 
 const getLatestVersion = async () => {
   const response = await axios.get(
@@ -178,7 +179,7 @@ export const fetchUserMatchRecord = async (
   try {
     const matchIds = await fetchUserMatch(puuid);
 
-    const limit = pLimit(3); // 동시에 3개씩 요청 보내기
+    const limit = pLimit(3);
     const matchs: TMatchRecord[] = await Promise.all(
       matchIds.map((matchId) =>
         limit(async () => {
@@ -193,5 +194,132 @@ export const fetchUserMatchRecord = async (
   } catch (error) {
     console.error("Error fetching Match:", error);
     throw error;
+  }
+};
+
+/**
+ * SUPA_BASE
+ */
+
+export const fetchNicknameDuplicate = async (nickname: string) => {
+  try {
+    const { data, error } = await supabase
+      .from("users")
+      .select("nickname")
+      .eq("nickname", nickname);
+
+    if (error) {
+      throw new Error("Database error");
+    }
+
+    return {
+      isDuplicate: data.length > 0,
+    };
+  } catch (error) {
+    console.error("Error fetching nickname:", error);
+    throw new Error("Error fetching nickname");
+  }
+};
+
+export const signUpWithEmail = async ({
+  email,
+  password,
+  nickname,
+  gender,
+  birth,
+  hide_gender,
+  hide_birth,
+}: SignUpPayload) => {
+  try {
+    const { data: existingNicknames, error: nicknameError } = await supabase
+      .from("users")
+      .select("nickname")
+      .eq("nickname", nickname);
+
+    if (nicknameError) throw new Error("Failed to check nickname duplication");
+    if (existingNicknames.length > 0) {
+      return { error: "Nickname already in use." };
+    }
+
+    const { data: signUpData, error: signUpError } = await supabase.auth.signUp(
+      {
+        email,
+        password,
+      }
+    );
+
+    if (signUpError) {
+      return { error: signUpError.message };
+    }
+
+    const user = signUpData.user;
+
+    if (!user) {
+      return { error: "Unable to retrieve user after sign up." };
+    }
+
+    const { error: insertError } = await supabase.from("users").insert([
+      {
+        id: user.id,
+        email,
+        nickname,
+        gender,
+        birth,
+        hide_gender,
+        hide_birth,
+      },
+    ]);
+
+    if (insertError) {
+      return { error: "Failed to store user information." };
+    }
+
+    return { success: true };
+  } catch (err: any) {
+    console.error("Sign up error:", err.message);
+    return { error: "An unexpected error occurred during sign up." };
+  }
+};
+export const signUpWithKakao = async (
+  email: string,
+  nickname: string,
+  gender: string | null,
+  birthDate: string | null
+) => {
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 28000));
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password: "12345678!",
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    const user = data.user;
+
+    if (!user) {
+      throw new Error("Failed to get user after sign up");
+    }
+
+    const { error: insertError } = await supabase.from("users").upsert([
+      {
+        UUID: user.id,
+        email,
+        nickname,
+        gender,
+        birthDate,
+      },
+    ]);
+
+    if (insertError) {
+      throw new Error(insertError.message);
+    }
+
+    return { success: true };
+  } catch (error: any) {
+    console.error("Error signing up with Kakao:", error.message);
+    return { error: error.message };
   }
 };

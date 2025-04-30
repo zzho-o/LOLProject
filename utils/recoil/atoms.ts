@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { TResolution, TUserDetailInfo } from "./types";
+import { ToastState, TResolution, TUserDetailInfo } from "./types";
 
 export const atomResolution = atom<TResolution>({
   key: "atomResolution",
@@ -34,4 +34,13 @@ export const atomLoggedInUser = atom<any>({
 export const atomLoading = atom<boolean>({
   key: "atomLoading",
   default: false,
+});
+
+export const atomToastState = atom<ToastState>({
+  key: "atomToastState",
+  default: {
+    isOpen: false,
+    message: "",
+    type: "success",
+  },
 });
