@@ -122,8 +122,8 @@ const ExtraInfo = () => {
     ).finally(() => {
       setLoading(false);
     });
-    console.log(success, error, "에러상황");
     if (success) {
+      console.log("성공");
       setToast({
         isOpen: true,
         message: t("wellcom"),
@@ -131,6 +131,7 @@ const ExtraInfo = () => {
       });
       router.push("/");
     } else {
+      console.log("실패");
       setToast({
         isOpen: true,
         message: "error",

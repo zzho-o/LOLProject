@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import * as S from "./styles";
 import { atomLoading, atomResolution } from "@/utils/recoil/atoms";
@@ -20,7 +20,51 @@ const SignIn = () => {
   const { t, i18n } = useTranslation(["common"]);
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
+  useEffect(() => {
+    const checkUserInfo = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
+      if (user) {
+        const isSocial =
+          !!user.app_metadata?.provider &&
+          user.app_metadata.provider !== "email";
+
+        if (isSocial) {
+          const { data: userInfo } = await supabase
+            .from("users")
+            .select("*")
+            .eq("uuid", user.id)
+            .single();
+
+          if (!userInfo) {
+            router.push("/SignUp/ExtraInfo");
+          }
+        }
+      }
+    };
+
+    checkUserInfo();
+  }, []);
+  const handleKakaoLogin = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "kakao",
+      });
+
+      if (error) {
+        console.error("Kakao 로그인 에러:", error.message);
+      } else {
+        console.log("Kakao 로그인 시작:", data);
+      }
+    } catch (err) {
+      console.error("예기치 않은 에러:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
   const handleSignIn = async () => {
     setLoading(true);
 
@@ -70,17 +114,17 @@ const SignIn = () => {
           </S.SignInButton>
           <Margin H={20} />
           <S.RowBox>
-            <Link href={kakaoLoginUrl}>
-              <Image
-                src="/assets/kakao.png"
-                alt="Image"
-                boxSize="10"
-                objectFit="cover"
-                borderRadius="md"
-                boxShadow="md"
-                _hover={{ boxShadow: "xl" }}
-              />
-            </Link>
+            <Image
+              onClick={handleKakaoLogin}
+              src="/assets/kakao.png"
+              alt="Kakao Login"
+              boxSize="10"
+              objectFit="cover"
+              borderRadius="md"
+              boxShadow="md"
+              cursor="pointer"
+              _hover={{ boxShadow: "xl" }}
+            />
             <Margin W={5} />
             <Image
               src="/assets/google.png"
@@ -130,12 +174,14 @@ const SignIn = () => {
           <S.RowBox>
             <Link href={kakaoLoginUrl}>
               <Image
+                onClick={handleKakaoLogin}
                 src="/assets/kakao.png"
-                alt="Image"
+                alt="Kakao Login"
                 boxSize="10"
                 objectFit="cover"
                 borderRadius="md"
                 boxShadow="md"
+                cursor="pointer"
                 _hover={{ boxShadow: "xl" }}
               />
             </Link>

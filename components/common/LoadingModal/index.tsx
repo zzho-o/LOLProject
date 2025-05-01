@@ -11,8 +11,6 @@ const LoadingModal = () => {
   const resolution = useRecoilValue(atomResolution);
   const isLoading = useRecoilValue(atomLoading);
   const { t, i18n } = useTranslation("common");
-  console.log(t, i18n);
-
   return (
     <>
       {isLoading ? (

@@ -287,35 +287,24 @@ export const signUpWithKakao = async (
   birthDate: string | null
 ) => {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 28000));
     const { data, error } = await supabase.auth.signUp({
       email,
       password: "12345678!",
     });
 
-    if (error) {
-      throw new Error(error.message);
-    }
-
+    if (error) throw new Error(error.message);
     const user = data.user;
+    if (!user) throw new Error("Failed to get user after sign up");
 
-    if (!user) {
-      throw new Error("Failed to get user after sign up");
-    }
+    const { error: insertError } = await supabase.from("users").insert({
+      uuid: user.id,
+      email: user.email,
+      nickname: "전호",
+      gender: "male",
+      birthDate: "1999-01-01",
+    });
 
-    const { error: insertError } = await supabase.from("users").upsert([
-      {
-        UUID: user.id,
-        email,
-        nickname,
-        gender,
-        birthDate,
-      },
-    ]);
-
-    if (insertError) {
-      throw new Error(insertError.message);
-    }
+    if (insertError) throw new Error(insertError.message);
 
     return { success: true };
   } catch (error: any) {
