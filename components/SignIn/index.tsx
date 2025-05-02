@@ -22,6 +22,7 @@ const SignIn = () => {
   const [pw, setPw] = useState("");
   useEffect(() => {
     const checkUserInfo = async () => {
+      // await supabase.auth.signOut();
       const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -40,6 +41,8 @@ const SignIn = () => {
 
           if (!userInfo) {
             router.push("/SignUp/ExtraInfo");
+          } else {
+            // 이미 회원가입 되어있을 때의 로직
           }
         }
       }
@@ -61,8 +64,6 @@ const SignIn = () => {
       }
     } catch (err) {
       console.error("예기치 않은 에러:", err);
-    } finally {
-      setLoading(false);
     }
   };
   const handleSignIn = async () => {

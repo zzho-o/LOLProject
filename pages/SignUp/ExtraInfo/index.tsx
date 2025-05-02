@@ -24,7 +24,8 @@ import {
   Portal,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { fetchNicknameDuplicate, signUpWithKakao } from "@/utils/api/api";
+import { fetchNicknameDuplicate } from "@/utils/api/api";
+import { supabase } from "libs/supabase";
 
 export async function getServerSideProps({ locale }: any) {
   return {
@@ -114,31 +115,50 @@ const ExtraInfo = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const { success, error } = await signUpWithKakao(
-      resolvedEmail,
-      nickname,
-      gender,
-      birthDate
-    ).finally(() => {
+
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      setToast({
+        isOpen: true,
+        message: "유저 정보를 불러올 수 없습니다.",
+        type: "error",
+      });
       setLoading(false);
-    });
-    if (success) {
-      console.log("성공");
+      return;
+    }
+
+    const { data, error } = await supabase.from("users").insert([
+      {
+        uuid: user.id,
+        nickname: nickname,
+        birthDate: birthDate,
+        gender: gender,
+        password: "12345678!",
+      },
+    ]);
+
+    if (error) {
+      setToast({
+        isOpen: true,
+        message: "회원가입 실패: " + error.message,
+        type: "error",
+      });
+    } else {
       setToast({
         isOpen: true,
         message: t("wellcom"),
         type: "success",
       });
       router.push("/");
-    } else {
-      console.log("실패");
-      setToast({
-        isOpen: true,
-        message: "error",
-        type: "error",
-      });
     }
+
+    setLoading(false);
   };
+
   return (
     <S.PCMainContainer>
       <Margin H={resolution === "PC" ? 50 : 30} />

@@ -312,3 +312,36 @@ export const signUpWithKakao = async (
     return { error: error.message };
   }
 };
+
+export const insertUserInfo = async ({
+  nickname,
+  gender,
+  birthDate,
+}: {
+  nickname: string;
+  gender: string | null;
+  birthDate: string | null;
+}) => {
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    throw new Error("로그인한 사용자를 찾을 수 없습니다.");
+  }
+
+  const { error: insertError } = await supabase.from("users").insert({
+    uuid: user.id,
+    email: user.email,
+    nickname,
+    gender,
+    birthDate,
+  });
+
+  if (insertError) {
+    throw new Error(`유저 정보 저장 실패: ${insertError.message}`);
+  }
+
+  return true;
+};

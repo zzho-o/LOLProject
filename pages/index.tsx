@@ -35,6 +35,7 @@ import TFT from "@/components/TFT";
 import { dataAttr } from "node_modules/@chakra-ui/react/dist/types/utils";
 import SignIn from "../components/SignIn";
 import Margin from "@/components/common/Margin";
+import { supabase } from "libs/supabase";
 
 export const getServerSideProps = async (context: any) => {
   const { locale, query } = context;
@@ -117,6 +118,27 @@ const Home = ({
 
     setLotationUrl(urls);
   };
+  // useEffect(() => {
+  //   const checkUserInfo = async () => {
+  //     const {
+  //       data: { user },
+  //     } = await supabase.auth.getUser();
+
+  //     if (!user) return;
+
+  //     const { data: userInfo, error } = await supabase
+  //       .from("users")
+  //       .select("*")
+  //       .eq("uuid", user.id)
+  //       .maybeSingle();
+
+  //     if (!userInfo) {
+  //       router.replace("/SignUp/ExtraInfo");
+  //     }
+  //   };
+
+  //   checkUserInfo();
+  // }, []);
   useEffect(() => {
     setUserInfo(summonerInfo);
     setBackgroundURL(mastery);
