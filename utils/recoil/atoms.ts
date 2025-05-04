@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { ToastState, TResolution, TUserDetailInfo } from "./types";
+import { ToastState, TResolution, TUserDetailInfo, UserInfo } from "./types";
 
 export const atomResolution = atom<TResolution>({
   key: "atomResolution",
@@ -43,4 +43,9 @@ export const atomToastState = atom<ToastState>({
     message: "",
     type: "success",
   },
+});
+
+export const atomUserState = atom<UserInfo | null>({
+  key: "atomUserState",
+  default: null,
 });

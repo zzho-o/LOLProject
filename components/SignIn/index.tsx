@@ -22,7 +22,6 @@ const SignIn = () => {
   const [pw, setPw] = useState("");
   useEffect(() => {
     const checkUserInfo = async () => {
-      // await supabase.auth.signOut();
       const {
         data: { user },
       } = await supabase.auth.getUser();

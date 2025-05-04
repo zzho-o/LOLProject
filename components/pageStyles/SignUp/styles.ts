@@ -98,6 +98,20 @@ export const InspectNickName = styled.button<{ resolution: string }>(
     fontSize: resolution === "PC" ? 14 : 12,
   })
 );
+export const InspectEmail = styled.button<{ resolution: string }>(
+  ({ resolution }) => ({
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.WARNING,
+    borderRadius: 100,
+    color: colors.WHITE,
+    width: "20%",
+    padding: 10,
+    cursor: "pointer",
+    fontSize: resolution === "PC" ? 14 : 12,
+  })
+);
 export const RowBox = styled.div({
   display: "flex",
   alignItems: "center",

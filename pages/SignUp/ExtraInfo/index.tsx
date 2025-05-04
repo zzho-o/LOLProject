@@ -134,10 +134,10 @@ const ExtraInfo = () => {
     const { data, error } = await supabase.from("users").insert([
       {
         uuid: user.id,
+        email: user.email,
         nickname: nickname,
         birthDate: birthDate,
         gender: gender,
-        password: "12345678!",
       },
     ]);
 

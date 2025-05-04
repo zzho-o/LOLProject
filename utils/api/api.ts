@@ -221,65 +221,6 @@ export const fetchNicknameDuplicate = async (nickname: string) => {
   }
 };
 
-export const signUpWithEmail = async ({
-  email,
-  password,
-  nickname,
-  gender,
-  birth,
-  hide_gender,
-  hide_birth,
-}: SignUpPayload) => {
-  try {
-    const { data: existingNicknames, error: nicknameError } = await supabase
-      .from("users")
-      .select("nickname")
-      .eq("nickname", nickname);
-
-    if (nicknameError) throw new Error("Failed to check nickname duplication");
-    if (existingNicknames.length > 0) {
-      return { error: "Nickname already in use." };
-    }
-
-    const { data: signUpData, error: signUpError } = await supabase.auth.signUp(
-      {
-        email,
-        password,
-      }
-    );
-
-    if (signUpError) {
-      return { error: signUpError.message };
-    }
-
-    const user = signUpData.user;
-
-    if (!user) {
-      return { error: "Unable to retrieve user after sign up." };
-    }
-
-    const { error: insertError } = await supabase.from("users").insert([
-      {
-        id: user.id,
-        email,
-        nickname,
-        gender,
-        birth,
-        hide_gender,
-        hide_birth,
-      },
-    ]);
-
-    if (insertError) {
-      return { error: "Failed to store user information." };
-    }
-
-    return { success: true };
-  } catch (err: any) {
-    console.error("Sign up error:", err.message);
-    return { error: "An unexpected error occurred during sign up." };
-  }
-};
 export const signUpWithKakao = async (
   email: string,
   nickname: string,
@@ -344,4 +285,67 @@ export const insertUserInfo = async ({
   }
 
   return true;
+};
+export const signUpWithEmail = async (
+  email: string,
+  password: string,
+  nickname: string,
+  gender: string,
+  birthDate: string
+) => {
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (error) {
+      if (error.message.includes("email already exists")) {
+        return { success: false, error: "이미 가입된 이메일입니다." };
+      }
+      throw new Error(error.message);
+    }
+
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    if (userError || !userData?.user) {
+      throw new Error("회원가입 후 유저 정보 불러오기 실패");
+    }
+
+    const user = userData.user;
+
+    const { error: upsertError } = await supabase.from("users").upsert({
+      uuid: user.id,
+      email: user.email,
+      nickname: nickname,
+      gender: gender,
+      birthDate: birthDate,
+    });
+
+    if (upsertError) throw new Error(upsertError.message);
+
+    return { success: true };
+  } catch (error: any) {
+    console.error("회원가입 실패:", error.message);
+    return { success: false, error: error.message };
+  }
+};
+
+export const fetchEmailDuplicate = async (email: string) => {
+  try {
+    const { data, error } = await supabase
+      .from("users")
+      .select("email")
+      .eq("email", email);
+
+    if (error) {
+      throw new Error("Database error");
+    }
+
+    return {
+      isDuplicate: data.length > 0,
+    };
+  } catch (error) {
+    console.error("Error fetching email:", error);
+    throw new Error("Error fetching email");
+  }
 };
