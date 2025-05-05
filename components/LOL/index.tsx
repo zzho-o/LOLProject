@@ -4,6 +4,7 @@ import ProfileCard from "../ProfileCard";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   atomBackgroundURL,
+  atomLoading,
   atomResolution,
   atomUserDetailInfo,
 } from "@/utils/recoil/atoms";
@@ -36,25 +37,23 @@ const LOL = ({
   const userInfo = useRecoilValue(atomUserDetailInfo);
   const resolution = useRecoilValue(atomResolution);
   const [backgroundURL, setBackgroundURL] = useRecoilState(atomBackgroundURL);
+  const [loading, setLoading] = useRecoilState(atomLoading);
+  setLoading(false);
 
   useEffect(() => {
-    if (mastery?.[0].championId ?? "") {
-      setBackgroundURL(null);
-    }
+    if (!mastery?.[0]?.championId || backgroundURL) return;
 
     const fetchImage = async () => {
       try {
-        if (mastery?.[0].championId ?? "") {
-          const imageurl = await fetchChampionImage(mastery[0]?.championId);
-          setBackgroundURL(imageurl);
-        }
+        const imageurl = await fetchChampionImage(mastery[0]?.championId);
+        setBackgroundURL(imageurl);
       } catch (err) {
         console.error("Error fetching champion image:", err);
       }
     };
 
     fetchImage();
-  }, [mastery]);
+  }, [mastery, backgroundURL]);
   return (
     <S.MainContainer>
       <Margin H={resolution === "MOBILE" ? 10 : 20} />
@@ -114,7 +113,7 @@ const LOL = ({
       </S.RowBox>
 
       <Margin H={resolution === "MOBILE" ? 10 : 20} />
-      <LotationChampions lotation={lotation} />
+      <LotationChampions lotation={lotation.length ?? []} />
 
       <Margin H={resolution === "MOBILE" ? 10 : 20} />
       <MatchCard userInfo={userInfo} userMatchInfo={userMatchInfo} />

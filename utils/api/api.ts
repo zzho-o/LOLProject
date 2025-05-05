@@ -241,9 +241,9 @@ export const signUpWithKakao = async (
     const { error: insertError } = await supabase.from("users").insert({
       uuid: user.id,
       email: user.email,
-      nickname: "전호",
-      gender: "male",
-      birthDate: "1999-01-01",
+      nickname: nickname,
+      gender: gender,
+      birthDate: birthDate,
     });
 
     if (insertError) throw new Error(insertError.message);

@@ -6,10 +6,15 @@ import { motion } from "framer-motion";
 import Margin from "../Margin";
 import { useTranslation } from "next-i18next";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { atomResolution, atomUserDetailInfo } from "@/utils/recoil/atoms";
+import {
+  atomLoading,
+  atomResolution,
+  atomToastState,
+  atomUserDetailInfo,
+} from "@/utils/recoil/atoms";
 import { Button } from "@chakra-ui/react";
-import { toaster } from "@/components/ui/toaster";
 import { useRouter } from "next/router";
+
 interface SearchButtonProps {
   summonerName: string;
   setSummonerName?: (val) => void;
@@ -31,26 +36,26 @@ const SearchInput = ({
     "stop"
   );
   const router = useRouter();
+  const [loading, setLoading] = useRecoilState(atomLoading);
+  const [toast, setToast] = useRecoilState(atomToastState);
+
   const handleEnterKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       setState("pending");
-      toaster.dismiss();
-      toaster.create({
-        description: "searching...",
-        type: "loading",
-      });
+      setLoading(true);
       handleSearch();
     }
   };
   useEffect(() => {
     if (error) {
       setState("error");
-      toaster.dismiss();
-      toaster.create({
-        description: t("nomatchingnicknamefound"),
+      setToast({
+        isOpen: true,
+        message: t("nomatchingnicknamefound"),
         type: "error",
       });
-      router.push("/");
+      setLoading(false);
+      router.push("/Home");
     } else {
       ("stop");
     }
@@ -94,11 +99,7 @@ const SearchInput = ({
                   title={t("start")}
                   handleSearch={() => {
                     setState("pending");
-                    toaster.dismiss();
-                    toaster.create({
-                      description: "searching...",
-                      type: "loading",
-                    });
+                    setLoading(true);
                     handleSearch();
                   }}
                 />
@@ -146,11 +147,7 @@ const SearchInput = ({
                 title={t("start")}
                 handleSearch={() => {
                   setState("pending");
-                  toaster.dismiss();
-                  toaster.create({
-                    description: "searching...",
-                    type: "loading",
-                  });
+                  setLoading(true);
                   handleSearch();
                 }}
                 mobile

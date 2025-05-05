@@ -13,13 +13,13 @@ const LotationChampions = ({ lotation }) => {
   const MobileLotationSecondRow = [];
   const { t, i18n } = useTranslation(["common"]);
 
-  lotation.forEach((item, idx) => {
-    if (idx < Math.ceil(lotation.length / 2)) {
-      MobileLotationFirstRow.push(item);
-    } else {
-      MobileLotationSecondRow.push(item);
-    }
-  });
+  // lotation.forEach((item, idx) => {
+  //   if (idx < Math.ceil(lotation.length / 2)) {
+  //     MobileLotationFirstRow.push(item);
+  //   } else {
+  //     MobileLotationSecondRow.push(item);
+  //   }
+  // });
   return (
     <S.RowBox
       style={{

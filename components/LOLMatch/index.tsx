@@ -5,7 +5,15 @@ import { atomBackgroundURL, atomUserDetailInfo } from "@/utils/recoil/atoms";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import LOL from "../LOL";
-import { fetchSelectChampionImage } from "@/utils/api/api";
+import {
+  fetchLotationChampions,
+  fetchSelectChampionImage,
+  fetchSummonerByRiotId,
+  fetchSummonerLeagueInfo,
+  fetchSummonerMastery,
+  fetchUserMatchRecord,
+} from "@/utils/api/api";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const LOLMatch = ({
   summonerInfo,
@@ -35,7 +43,7 @@ const LOLMatch = ({
   }, [summonerInfo]);
   const handleSearch = () => {
     if (summonerName.trim()) {
-      router.push(`/?name=${summonerName}`);
+      router.push(`/Home/?name=${summonerName}`);
     }
   };
 
