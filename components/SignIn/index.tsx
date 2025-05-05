@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import * as S from "./styles";
-import { atomLoading, atomResolution } from "@/utils/recoil/atoms";
+import {
+  atomLoading,
+  atomResolution,
+  atomToastState,
+} from "@/utils/recoil/atoms";
 import Margin from "@/components/common/Margin";
 import { supabase } from "@/utils/supabase/supabaseClient";
 import { useRouter } from "next/router";
@@ -20,6 +24,7 @@ const SignIn = () => {
   const { t, i18n } = useTranslation(["common"]);
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
+  const [toast, setToast] = useRecoilState(atomToastState);
   useEffect(() => {
     const checkUserInfo = async () => {
       const {
@@ -49,6 +54,11 @@ const SignIn = () => {
 
     checkUserInfo();
   }, []);
+  const handleEnterKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSignIn();
+    }
+  };
   const handleKakaoLogin = async () => {
     setLoading(true);
     try {
@@ -76,10 +86,18 @@ const SignIn = () => {
 
       if (error) {
         console.error("Login failed:", error.message);
-        alert("Failed to sign in. Please try again.");
+        setToast({
+          isOpen: true,
+          message: t("failSignIn"),
+          type: "error",
+        });
       } else {
         console.log("Login successful", data);
-        alert("Successfully signed in!");
+        setToast({
+          isOpen: true,
+          message: t("successSignIn"),
+          type: "success",
+        });
       }
     } catch (err) {
       console.error("An unexpected error occurred:", err);
@@ -106,6 +124,7 @@ const SignIn = () => {
               type="password"
               value={pw}
               onChange={(e) => setPw(e.target.value)}
+              onKeyDown={(e) => handleEnterKeyDown(e)}
             />
           </S.RowBox>
           <Margin H={20} />

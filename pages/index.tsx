@@ -1,8 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-
-import SearchInput from "@/components/common/SearchInput";
 import {
   fetchLotationChampions,
   fetchSelectChampionImage,
@@ -14,12 +12,13 @@ import {
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   atomBackgroundURL,
-  atomGameTap,
+  atomMenuTap,
   atomLoggedInUser,
   atomResolution,
   atomUserDetailInfo,
+  atomToastState,
 } from "@/utils/recoil/atoms";
-import LayoutBodyOnly from "@/layout/LayoutBodyOnly";
+import * as S from "../components/pageStyles/styles";
 
 export type getNameTag = {
   puuid: string;
@@ -44,30 +43,14 @@ export const getServerSideProps = async (context: any) => {
   if (!name) {
     return {
       props: {
-        summonerInfo: null,
-        mastery: null,
-        userLeagueInfo: [],
-        userMatchInfo: [],
-        lotation: null,
         ...(await serverSideTranslations(locale, ["common"])),
       },
     };
   }
 
   try {
-    const summonerInfo = await fetchSummonerByRiotId(name);
-    const mastery = await fetchSummonerMastery(summonerInfo.puuid);
-    const lotation = await fetchLotationChampions();
-    const userLeagueInfo = await fetchSummonerLeagueInfo(summonerInfo.puuid);
-    const userMatchInfo = await fetchUserMatchRecord(summonerInfo.puuid);
     return {
       props: {
-        summonerInfo,
-        error: false,
-        lotation,
-        userLeagueInfo,
-        userMatchInfo,
-        mastery,
         ...(await serverSideTranslations(locale, ["common"])),
       },
     };
@@ -75,140 +58,34 @@ export const getServerSideProps = async (context: any) => {
     console.error("Error fetching summoner:", error);
     return {
       props: {
-        summonerInfo: null,
-        error: true,
-        mastery: null,
-        userLeagueInfo: [],
-        userMatchInfo: [],
-        lotation: null,
         ...(await serverSideTranslations(locale, ["common"])),
       },
     };
   }
 };
 
-const Home = ({
-  summonerInfo,
-  error,
-  mastery,
-  userMatchInfo,
-  lotation,
-  userLeagueInfo,
-}: any) => {
-  const [summonerName, setSummonerName] = useState("");
+const Home = () => {
   const router = useRouter();
-  const [userInfo, setUserInfo] = useRecoilState(atomUserDetailInfo);
-  const [backgroundURL, setBackgroundURL] = useRecoilState(atomBackgroundURL);
   const [loggedInUser, setLoggedInUser] = useRecoilState(atomLoggedInUser);
-  const game = useRecoilValue(atomGameTap);
-  const [lotationUrl, setLotationUrl] = useState([]);
   const resolution = useRecoilValue(atomResolution);
   const { t, i18n } = useTranslation(["common"]);
+  const [toast, setToast] = useRecoilState(atomToastState);
 
-  const handleSearch = () => {
-    if (summonerName.trim()) {
-      router.push(`/?name=${summonerName}`);
-    }
-  };
-  const fetchImages = async () => {
-    if (!lotation?.freeChampionIds) return [];
-    const urls = await Promise.all(
-      lotation.freeChampionIds.map((id) => fetchSelectChampionImage(id))
-    );
-
-    setLotationUrl(urls);
-  };
-  // useEffect(() => {
-  //   const checkUserInfo = async () => {
-  //     const {
-  //       data: { user },
-  //     } = await supabase.auth.getUser();
-
-  //     if (!user) return;
-
-  //     const { data: userInfo, error } = await supabase
-  //       .from("users")
-  //       .select("*")
-  //       .eq("uuid", user.id)
-  //       .maybeSingle();
-
-  //     if (!userInfo) {
-  //       router.replace("/SignUp/ExtraInfo");
-  //     }
-  //   };
-
-  //   checkUserInfo();
-  // }, []);
   useEffect(() => {
-    setUserInfo(summonerInfo);
-    setBackgroundURL(mastery);
-    fetchImages();
-  }, [summonerInfo]);
-  useEffect(() => {
-    toaster.dismiss();
-    if (userInfo) {
-      toaster.create({
-        description: t("enjoyit"),
+    if (loggedInUser) {
+      router.push("/Home");
+      setToast({
+        isOpen: true,
+        message: t("welcome"),
         type: "success",
       });
     }
-  }, [userInfo]);
+  }, [loggedInUser, router]);
 
   return (
     <>
-      {!loggedInUser ? (
-        <>
-          <Margin H={resolution === "PC" ? 70 : 50} />
-          <SignIn />
-        </>
-      ) : (
-        <LayoutBodyOnly>
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
-          >
-            <SearchInput
-              summonerName={summonerName}
-              setSummonerName={setSummonerName}
-              handleSearch={handleSearch}
-              error={error}
-            />
-          </motion.div>
-        </LayoutBodyOnly>
-      )}
-      {/* 보류중
-      {!userInfo ? (
-        <LayoutBodyOnly>
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
-          >
-            <SearchInput
-              summonerName={summonerName}
-              setSummonerName={setSummonerName}
-              handleSearch={handleSearch}
-              error={error}
-            />
-          </motion.div>
-        </LayoutBodyOnly>
-      ) : (
-        <MainContainer>
-          {game === "LOL" ? (
-            <LOL
-              mastery={mastery}
-              lotation={lotationUrl}
-              userLeagueInfo={userLeagueInfo}
-              userMatchInfo={userMatchInfo}
-            />
-          ) : (
-            <TFT />
-          )}
-        </MainContainer>
-      )} */}
+      <Margin H={resolution === "PC" ? 70 : 50} />
+      <SignIn />
     </>
   );
 };

@@ -1,5 +1,11 @@
-import styled from "@emotion/styled";
 import { colors } from "@/config/globalColors";
+import styled from "@emotion/styled";
+
+export const NavContainer = styled.div({
+  display: "flex",
+  gap: 0,
+  alignItems: "center",
+});
 
 export const TabButton = styled.button<{ isActive: boolean }>(
   ({ isActive }) => ({
@@ -43,24 +49,3 @@ export const TabButton = styled.button<{ isActive: boolean }>(
     },
   })
 );
-
-export const HeaderContainer = styled.div({
-  width: "100%",
-  backgroundColor: colors.GRAY_900,
-  boxShadow: `0 4px 6px ${colors.BLACK}`,
-  padding: 10,
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-between",
-});
-
-export const BeforeSearchContainer = styled.div({
-  color: colors.GRAY_400,
-});
-
-export const TitleContainer = styled.div({
-  display: "flex",
-  flex: 1,
-  flexDirection: "row",
-  justifyContent: "space-between",
-});

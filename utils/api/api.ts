@@ -2,6 +2,7 @@ import axios from "axios";
 import { SignUpPayload, TMatchRecord } from "./types";
 import pLimit from "p-limit";
 import { supabase } from "libs/supabase";
+import { SetterOrUpdater } from "recoil";
 
 const getLatestVersion = async () => {
   const response = await axios.get(
@@ -347,5 +348,19 @@ export const fetchEmailDuplicate = async (email: string) => {
   } catch (error) {
     console.error("Error fetching email:", error);
     throw new Error("Error fetching email");
+  }
+};
+
+export const logoutUser = async (setUser: SetterOrUpdater<Object | null>) => {
+  try {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) throw error;
+
+    setUser(null);
+
+    console.log("로그아웃 성공");
+  } catch (error) {
+    console.error("로그아웃 실패:", error);
   }
 };

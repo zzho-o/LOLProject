@@ -16,9 +16,9 @@ export const atomWindow = atom<{ innerWidth: number; innerHeight: number }>({
   default: { innerWidth: 0, innerHeight: 0 },
 });
 
-export const atomGameTap = atom<"LOL" | "TFT">({
+export const atomMenuTap = atom<"MY" | "LOL MATCH">({
   key: "atomGameTap",
-  default: "LOL",
+  default: "MY",
 });
 
 export const atomBackgroundURL = atom<string>({

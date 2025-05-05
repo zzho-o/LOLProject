@@ -3,9 +3,12 @@ import { useEffect, useState } from "react";
 import * as S from "./styles";
 import { colors } from "@/config/globalColors";
 import {
-  atomGameTap,
+  atomMenuTap,
+  atomLoading,
+  atomLoggedInUser,
   atomResolution,
   atomUserDetailInfo,
+  atomUserState,
 } from "@/utils/recoil/atoms";
 import { useRecoilState, useRecoilValue } from "recoil";
 import Margin from "../common/Margin";
@@ -25,6 +28,7 @@ import enData from "@/public/locales/en/common.json";
 import { useRouter } from "next/router";
 import { Drawer, Button, Portal } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
+import { logoutUser } from "@/utils/api/api";
 
 const Header = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -35,67 +39,40 @@ const Header = () => {
   const { t, i18n } = useTranslation(["common"]);
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [game, setGame] = useRecoilState(atomGameTap);
+  const [menu, setMenu] = useRecoilState(atomMenuTap);
+  const [loggedInUser, setLoggedInUser] = useRecoilState(atomLoggedInUser);
+  const [userState, setUserState] = useRecoilState(atomUserState);
+  const [loading, setLoading] = useRecoilState(atomLoading);
 
-  type GameType = "LOL" | "TFT";
-
-  const tabs: { id: GameType; label: GameType }[] = [
-    { id: "LOL", label: "LOL" },
-    { id: "TFT", label: "TFT" },
-  ];
   const frameworks = createListCollection({
     items: [
       { label: "한국어", value: "ko" },
       { label: "English", value: "en" },
     ],
   });
-
+  const handleLogOut = async () => {
+    setLoading(true);
+    await logoutUser(setUserState).then((res) => {
+      setLoggedInUser(false);
+      setLoading(false);
+      router.push("/");
+    });
+  };
   return (
     <S.HeaderContainer>
-      {userInfo ? (
-        <S.NavContainer>
-          {tabs.map((tab) => (
-            <S.TabButton
-              key={tab.id}
-              onClick={() => {
-                setActiveTab(tab.id);
-                setGame(tab.label);
-              }}
-              isActive={activeTab === tab.id}
-            >
-              {tab.label}
-              {activeTab === tab.id && (
-                <motion.div
-                  layoutId="underline"
-                  style={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    height: 2,
-                    backgroundColor: colors.PRIMARY,
-                  }}
-                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                />
-              )}
-            </S.TabButton>
-          ))}
-        </S.NavContainer>
-      ) : (
-        <S.TitleContainer
-          onClick={() => {
-            router.push("/");
-          }}
-        >
-          <S.TabButton isActive={false}>{t("title")}</S.TabButton>
-        </S.TitleContainer>
-      )}
+      <S.TitleContainer
+        onClick={() => {
+          router.push(loggedInUser ? "/Home" : "/");
+        }}
+      >
+        <S.TabButton isActive={false}>{t("title")}</S.TabButton>
+      </S.TitleContainer>
       <div style={{ display: "flex", alignItems: "center" }}>
-        {userInfo && (
+        {loggedInUser && (
           <S.TabButton
             isActive={true}
             onClick={() => {
-              router.push("/");
+              handleLogOut();
             }}
           >
             {t("logout")}

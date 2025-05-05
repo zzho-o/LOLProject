@@ -18,3 +18,11 @@ export type ToastState = {
   message: string;
   type: ToastType;
 };
+
+export interface UserInfo {
+  uuid: string;
+  email: string;
+  nickname: string;
+  birthDate: string;
+  gender: "male" | "female";
+}

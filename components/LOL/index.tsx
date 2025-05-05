@@ -46,7 +46,6 @@ const LOL = ({
       try {
         if (mastery?.[0].championId ?? "") {
           const imageurl = await fetchChampionImage(mastery[0]?.championId);
-          console.log(imageurl);
           setBackgroundURL(imageurl);
         }
       } catch (err) {

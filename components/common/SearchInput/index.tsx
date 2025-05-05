@@ -43,7 +43,6 @@ const SearchInput = ({
     }
   };
   useEffect(() => {
-    console.log(userInfo);
     if (error) {
       setState("error");
       toaster.dismiss();

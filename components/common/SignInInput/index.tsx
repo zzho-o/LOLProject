@@ -43,7 +43,6 @@ const SignInInput = ({
     }
   };
   useEffect(() => {
-    console.log(userInfo);
     if (error) {
       setState("error");
       toaster.dismiss();

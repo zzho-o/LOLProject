@@ -81,7 +81,6 @@ const MatchCard = ({
         const isWin = inspectWin(match, userInfo.puuid);
         const myKdaData = myGameData(match, userInfo.puuid);
         const gameType = getGameType(match.queueId);
-        console.log("Match queueId:", match.queueId);
 
         return (
           <motion.div

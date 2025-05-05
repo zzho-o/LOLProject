@@ -1,5 +1,5 @@
 {
-  "title": "LoL & TFT Nexus",
+  "title": "LoL Nexus",
   "betanotice": "Only the KR tag is supported as it is in the beta version.",
   "nomatchingnicknamefound": "No matching nickname found.",
   "start": "start !!",
@@ -34,12 +34,14 @@
   "submit": "Sign Up",
   "signUp": "Sign Up",
   "passwordMismatch": "Passwords do not match.",
-  "welcome": "Welcome! You've successfully signed up.",
+  "welcome": "Welcome!",
   "signUpFailed": "Failed to sign up. Please try again.",
   "emailDuplicate": "Email is already in use.",
   "emailValid": "Email is available.",
   "emailCheckError": "Failed to check email.",
   "invalidEmailFormat": "Invalid email format.",
+  "successSignIn": "Successfully signed in!",
+  "failSignIn": "Failed to sign in. Please try again.",
   "gameType": {
     "ranked_solo": "Ranked (Solo)",
     "ranked_flex": "Ranked (Flex)",
