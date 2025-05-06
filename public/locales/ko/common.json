@@ -41,6 +41,7 @@
   "invalidEmailFormat": "유효한 이메일 형식이 아닙니다.",
   "successSignIn": "로그인에 성공했어요!",
   "failSignIn": "로그인에 실패했어요. 다시 시도해주세요.",
+  "re-search": "재검색",
   "gameType": {
     "ranked_solo": "랭크(개인)",
     "ranked_flex": "랭크(자유)",

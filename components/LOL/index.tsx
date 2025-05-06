@@ -22,6 +22,7 @@ import { TMatchRecord } from "@/utils/api/types";
 import MatchCard from "./MatchCard";
 import LotationChampions from "./LotationChampions";
 import UserTier from "./UserTier";
+import { useTranslation } from "next-i18next";
 
 const LOL = ({
   mastery,
@@ -34,11 +35,15 @@ const LOL = ({
   userLeagueInfo: any;
   userMatchInfo: TMatchRecord[];
 }) => {
-  const userInfo = useRecoilValue(atomUserDetailInfo);
+  const [userInfo, setUserInfo] = useRecoilState(atomUserDetailInfo);
   const resolution = useRecoilValue(atomResolution);
   const [backgroundURL, setBackgroundURL] = useRecoilState(atomBackgroundURL);
   const [loading, setLoading] = useRecoilState(atomLoading);
+  const { t, i18n } = useTranslation(["common"]);
   setLoading(false);
+  const handleResearch = () => {
+    setUserInfo(null);
+  };
 
   useEffect(() => {
     if (!mastery?.[0]?.championId || backgroundURL) return;
@@ -57,7 +62,6 @@ const LOL = ({
   return (
     <S.MainContainer>
       <Margin H={resolution === "MOBILE" ? 10 : 20} />
-
       <S.RowBox style={{ width: "100%" }}>
         <Margin W={resolution === "MOBILE" ? 10 : 20} />
         <AnimatePresence>
@@ -111,10 +115,13 @@ const LOL = ({
           </S.RowBox>
         )}
       </S.RowBox>
-
       <Margin H={resolution === "MOBILE" ? 10 : 20} />
-      <LotationChampions lotation={lotation.length ?? []} />
-
+      <S.RowBox style={{ width: "100%" }}>
+        <LotationChampions lotation={lotation.length ?? []} />
+        <S.StyledButton onClick={handleResearch}>
+          {t("re-search")}
+        </S.StyledButton>
+      </S.RowBox>
       <Margin H={resolution === "MOBILE" ? 10 : 20} />
       <MatchCard userInfo={userInfo} userMatchInfo={userMatchInfo} />
     </S.MainContainer>

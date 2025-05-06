@@ -1,3 +1,4 @@
+import { colors } from "@/config/globalColors";
 import styled from "@emotion/styled";
 
 export const MainContainer = styled.div({
@@ -19,3 +20,26 @@ export const ColumnBox = styled.div({
   flexDirection: "column",
   justifyContent: "center",
 });
+export const StyledButton = styled.button<{
+  mobile?: boolean;
+  searchButton?: boolean;
+}>(({ searchButton = false, mobile = false }) => ({
+  display: "flex",
+  alignItems: "center",
+  flexDirection: "row",
+  justifyContent: "center",
+  padding: "10px 20px",
+  fontSize: mobile ? 12 : 16,
+  backgroundColor: colors.SKELETON,
+  color: "#fff",
+  border: "none",
+  width: mobile ? "50%" : 200,
+  height: 50,
+  borderRadius: 100,
+  borderStartStartRadius: searchButton ? (mobile ? 100 : 0) : 100,
+  borderEndStartRadius: searchButton ? (mobile ? 100 : 0) : 100,
+  cursor: "pointer",
+  "&:hover": {
+    backgroundColor: "#3700B3",
+  },
+}));

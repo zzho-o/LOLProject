@@ -42,6 +42,7 @@
   "invalidEmailFormat": "Invalid email format.",
   "successSignIn": "Successfully signed in!",
   "failSignIn": "Failed to sign in. Please try again.",
+  "re-search": "re-search",
   "gameType": {
     "ranked_solo": "Ranked (Solo)",
     "ranked_flex": "Ranked (Flex)",
