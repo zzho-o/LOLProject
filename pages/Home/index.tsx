@@ -21,6 +21,7 @@ import { useRecoilState } from "recoil";
 import { useState } from "react";
 import { colors } from "@/config/globalColors";
 import LOLMatch from "@/components/LOLMatch";
+import MY from "@/components/MY";
 
 export const getServerSideProps = async (context: any) => {
   const { locale, query } = context;
@@ -122,7 +123,7 @@ const Home = ({
       </S.NavContainer>
 
       {activeTab === "MY" ? (
-        <></> // 이후 MY 영역 구성
+        <MY />
       ) : (
         <LOLMatch
           summonerInfo={summonerInfo}
