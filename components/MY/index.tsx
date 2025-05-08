@@ -21,32 +21,33 @@ const MY = () => {
   return (
     <S.MainContainer>
       <RowBox style={{ width: "100%", justifyContent: "flex-start" }}>
-        <S.ColumnBox style={{ width: "20%", backgroundColor: "#123123" }}>
+        <S.ColumnBox style={{ width: "20%" }}>
           <Swiper
             effect="coverflow"
             grabCursor={true}
             centeredSlides={true}
-            slidesPerView={"auto"}
+            slidesPerView={1.2} // 상대값으로 조정
             loop={true}
             coverflowEffect={{
               rotate: 20,
               stretch: 0,
-              depth: 150,
-              modifier: 1.5,
+              depth: 100,
+              modifier: 1.2,
               slideShadows: true,
             }}
             modules={[EffectCoverflow]}
             className="mySwiper"
+            style={{ width: "100%", height: "240px" }}
           >
             {dummyChampions.map((champ) => (
               <SwiperSlide
                 key={champ.name}
                 style={{
-                  width: "250px",
-                  height: "300px",
-                  borderRadius: "16px",
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "12px",
                   overflow: "hidden",
-                  boxShadow: "0 0 20px rgba(0,0,0,0.5)",
+                  boxShadow: "0 0 10px rgba(0,0,0,0.4)",
                   background: "#222",
                   display: "flex",
                   alignItems: "center",
