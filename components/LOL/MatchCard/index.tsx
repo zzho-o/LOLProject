@@ -1,5 +1,4 @@
 import { colors } from "@/config/globalColors";
-import { fetchSelectChampionImage } from "@/utils/api/api";
 import { TMatchRecord } from "@/utils/api/types";
 import { Card, Heading, Stack } from "@chakra-ui/react";
 import { motion, AnimatePresence } from "framer-motion";

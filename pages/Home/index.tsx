@@ -1,12 +1,15 @@
 import {
   fetchLotationChampions,
-  fetchSelectChampionImage,
   fetchSummonerByRiotId,
   fetchSummonerLeagueInfo,
   fetchSummonerMastery,
   fetchUserMatchRecord,
 } from "@/utils/api/api";
-import { atomMenuTap, atomToastState } from "@/utils/recoil/atoms";
+import {
+  atomMenuTap,
+  atomOnChampionModal,
+  atomToastState,
+} from "@/utils/recoil/atoms";
 import * as S from "../../components/pageStyles/Home/styles";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -17,11 +20,12 @@ export type getNameTag = {
 };
 
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useState } from "react";
 import { colors } from "@/config/globalColors";
 import LOLMatch from "@/components/LOLMatch";
 import MY from "@/components/MY";
+import ChampionModal from "@/components/ChampionModal";
 
 export const getServerSideProps = async (context: any) => {
   const { locale, query } = context;
@@ -84,6 +88,7 @@ const Home = ({
   const [toast, setToast] = useRecoilState(atomToastState);
   const [activeTab, setActiveTab] = useState("MY");
   const [menu, setMenu] = useRecoilState(atomMenuTap);
+  const [onModal, setOnModal] = useRecoilState(atomOnChampionModal);
   type TabType = "MY" | "LOL MATCH";
 
   const tabs: { id: TabType; label: TabType }[] = [
@@ -93,6 +98,7 @@ const Home = ({
 
   return (
     <>
+      {onModal ? <ChampionModal /> : null}
       <S.NavContainer>
         {tabs.map((tab) => (
           <S.TabButton

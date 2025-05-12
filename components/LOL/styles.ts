@@ -11,8 +11,11 @@ export const MainContainer = styled.div({
 });
 
 export const RowBox = styled.div({
+  width: "100%",
+  padding: 50,
   display: "flex",
   alignItems: "center",
+  flexDirection: "row-reverse",
 });
 
 export const ColumnBox = styled.div({

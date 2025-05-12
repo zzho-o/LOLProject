@@ -5,14 +5,7 @@ import { atomBackgroundURL, atomUserDetailInfo } from "@/utils/recoil/atoms";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import LOL from "../LOL";
-import {
-  fetchLotationChampions,
-  fetchSelectChampionImage,
-  fetchSummonerByRiotId,
-  fetchSummonerLeagueInfo,
-  fetchSummonerMastery,
-  fetchUserMatchRecord,
-} from "@/utils/api/api";
+import { fetchSelectChampionImage } from "@/utils/api/api";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const LOLMatch = ({

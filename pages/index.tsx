@@ -1,14 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import {
-  fetchLotationChampions,
-  fetchSelectChampionImage,
-  fetchSummonerByRiotId,
-  fetchSummonerLeagueInfo,
-  fetchSummonerMastery,
-  fetchUserMatchRecord,
-} from "@/utils/api/api";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   atomBackgroundURL,

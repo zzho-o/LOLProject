@@ -49,3 +49,8 @@ export const atomUserState = atom<UserInfo | null>({
   key: "atomUserState",
   default: null,
 });
+
+export const atomOnChampionModal = atom<boolean>({
+  key: "atomOnChampionModal",
+  default: false,
+});

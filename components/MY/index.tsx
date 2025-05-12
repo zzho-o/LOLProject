@@ -8,6 +8,8 @@ import { Button, ButtonGroup } from "@chakra-ui/react";
 import { RowBox } from "../LOL/styles";
 import { RiAddBoxLine } from "react-icons/ri";
 import { colors } from "@/config/globalColors";
+import { useRecoilState } from "recoil";
+import { atomOnChampionModal } from "@/utils/recoil/atoms";
 
 const dummyChampions = [
   { name: "Ahri", imgUrl: "/champions/Ahri.png" },
@@ -18,15 +20,16 @@ const dummyChampions = [
 ];
 
 const MY = () => {
+  const [onModal, setOnModal] = useRecoilState(atomOnChampionModal);
   return (
     <S.MainContainer>
-      <RowBox style={{ width: "100%", justifyContent: "flex-start" }}>
+      <S.RowBox style={{ width: "100%", justifyContent: "flex-start" }}>
         <S.ColumnBox style={{ width: "20%" }}>
           <Swiper
             effect="coverflow"
             grabCursor={true}
             centeredSlides={true}
-            slidesPerView={1.2} // 상대값으로 조정
+            slidesPerView={1.2}
             loop={true}
             coverflowEffect={{
               rotate: 20,
@@ -65,10 +68,14 @@ const MY = () => {
             ))}
           </Swiper>
           <Button style={{ backgroundColor: colors.NAVY }}>
-            <RiAddBoxLine />
+            <RiAddBoxLine
+              onClick={() => {
+                setOnModal(true);
+              }}
+            />
           </Button>
         </S.ColumnBox>
-      </RowBox>
+      </S.RowBox>
     </S.MainContainer>
   );
 };

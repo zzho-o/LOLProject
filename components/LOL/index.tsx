@@ -10,11 +10,7 @@ import {
 } from "@/utils/recoil/atoms";
 import Margin from "../common/Margin";
 import { useEffect, useState } from "react";
-import {
-  fetchChampionImage,
-  fetchLotationChampions,
-  fetchSelectChampionImage,
-} from "@/utils/api/api";
+import { fetchChampionImage } from "@/utils/api/api";
 import { Box, Collapsible, Card, Heading, Stack } from "@chakra-ui/react";
 import { colors } from "@/config/globalColors";
 import Image from "next/image";

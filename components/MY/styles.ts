@@ -35,3 +35,9 @@ export const StyledButton = styled.div<{
     backgroundColor: "#3700B3",
   },
 }));
+
+export const RowBox = styled.div({
+  width: "100%",
+  display: "flex",
+  alignItems: "center",
+});

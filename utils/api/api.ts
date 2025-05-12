@@ -4,7 +4,7 @@ import pLimit from "p-limit";
 import { supabase } from "libs/supabase";
 import { SetterOrUpdater } from "recoil";
 
-const getLatestVersion = async () => {
+export const getLatestVersion = async () => {
   const response = await axios.get(
     "https://ddragon.leagueoflegends.com/api/versions.json"
   );
@@ -83,16 +83,24 @@ export const fetchSummonerImage = async (profileIconId: number) => {
   }
 };
 
+let cachedChampionData: Record<string, any> | null = null;
+
+export const getChampionData = async () => {
+  if (cachedChampionData) return cachedChampionData;
+
+  const version = await getLatestVersion();
+  const response = await axios.get(
+    `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`
+  );
+  cachedChampionData = response.data.data;
+  return cachedChampionData;
+};
 export const fetchChampionName = async (championIconId: string) => {
   try {
-    const version = await getLatestVersion();
-    const response = await axios.get(
-      `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`
-    );
-    const champions = response.data.data;
-    for (let i in champions) {
-      if (champions[i].key === String(championIconId)) {
-        return i;
+    const champions = await getChampionData();
+    for (let key in champions) {
+      if (champions[key].key === String(championIconId)) {
+        return key;
       }
     }
   } catch (error) {
@@ -112,12 +120,12 @@ export const fetchChampionImage = async (championIconId: string) => {
 };
 
 export const fetchSelectChampionImage = async (championIconId: string) => {
-  const version = await getLatestVersion();
-  const championName = await fetchChampionName(championIconId);
   try {
+    const version = await getLatestVersion();
+    const championName = await fetchChampionName(championIconId);
     return `https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${championName}.png`;
   } catch (error) {
-    console.error("Error fetching champion image:", error);
+    console.error("Error fetching select champion image:", error);
     throw error;
   }
 };

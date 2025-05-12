@@ -49,7 +49,6 @@ const MatchAllChamp = ({ match }) => {
           />
         ))}
       </S.ColumnBox>
-      {/* 2팀 챔피언 이미지 */}
       <S.ColumnBox>
         {team2Imgs.map((img, idx) => (
           <Image
