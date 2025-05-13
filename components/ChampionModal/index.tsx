@@ -31,29 +31,27 @@ const groupedByPosition = (champions: Champion[]) => {
   }, {});
 };
 
-const encodeChampionName = (name: string) => {
-  return encodeURIComponent(name);
-};
-
-const allChampionsWithPosition: Champion[] = await Promise.all(
-  allChampions.map(async (name) => {
-    let position = "";
-    const version = await getLatestVersion();
-    if (topChampions.includes(name)) position = "Top";
-    else if (midChampions.includes(name)) position = "Mid";
-    else if (jungleChampions.includes(name)) position = "Jungle";
-    else if (adcChampions.includes(name)) position = "ADC";
-    else if (supportChampions.includes(name)) position = "Support";
-
-    return {
-      name,
-      position,
-      imgUrl: `https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${encodeChampionName(
-        name
-      )}.png`,
-    };
-  })
+const version = await getLatestVersion();
+const response = await fetch(
+  `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`
 );
+const data = await response.json();
+const championData = Object.values(data.data) as any[];
+
+const allChampionsWithPosition: Champion[] = championData.map((champ: any) => {
+  let position = "";
+  if (topChampions.includes(champ.name)) position = "Top";
+  else if (midChampions.includes(champ.name)) position = "Mid";
+  else if (jungleChampions.includes(champ.name)) position = "Jungle";
+  else if (adcChampions.includes(champ.name)) position = "ADC";
+  else if (supportChampions.includes(champ.name)) position = "Support";
+
+  return {
+    name: champ.name,
+    position,
+    imgUrl: `https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champ.id}.png`,
+  };
+});
 
 const ChampionModal = () => {
   const [onModal, setOnModal] = useRecoilState(atomOnChampionModal);
@@ -74,7 +72,7 @@ const ChampionModal = () => {
         </RowBox>
         <div style={{ marginBottom: "20px" }}>
           {["Top", "Mid", "Jungle", "ADC", "Support"].map((position) => (
-            <button
+            <Button
               key={position}
               onClick={() => setActiveTab(position)}
               style={{
@@ -85,8 +83,13 @@ const ChampionModal = () => {
                 borderRadius: "5px",
               }}
             >
-              {position}
-            </button>
+              <Image
+                src={`/assets/Line${[position]}.png`}
+                alt={position}
+                width={100}
+                height={100}
+              />
+            </Button>
           ))}
         </div>
 
@@ -105,7 +108,6 @@ const ChampionModal = () => {
                   height={100}
                   style={{ borderRadius: "8px" }}
                 />
-                <p>{champ.name}</p>
               </div>
             ))}
           </RowBox>
